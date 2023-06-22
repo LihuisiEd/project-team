@@ -21,8 +21,8 @@ const HomeView = ({ user, signOut }) => {
         <View style={styles.sceneContainer}>
           {routes[0].title === 'Compañeros' && (
             <View>
-                <CreatePostForm />
-                <PostList />
+                <ColaboratorScreen />
+                
             </View>
           )}
         </View>

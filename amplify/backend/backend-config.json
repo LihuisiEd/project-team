@@ -1,13 +1,28 @@
 {
   "api": {
     "projectteam": {
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "projectteamd3ec5e70"
+        }
+      ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [],
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authprojectteamd3ec5e70"
+              }
+            }
+          ],
           "defaultAuthentication": {
             "apiKeyConfig": {
-              "apiKeyExpirationDate": "2023-07-22T14:24:48.048Z",
+              "apiKeyExpirationDate": "2023-07-22T21:03:47.913Z",
               "apiKeyExpirationDays": 30,
               "description": "123456"
             },

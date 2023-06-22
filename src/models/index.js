@@ -7,9 +7,19 @@ const PostStatus = {
   "INACTIVE": "INACTIVE"
 };
 
-const { Post } = initSchema(schema);
+const TaskStatus = {
+  "NOT_STARTED": "NOT_STARTED",
+  "IN_PROGRESS": "IN_PROGRESS",
+  "COMPLETED": "COMPLETED"
+};
+
+const { Post, Project, Task, Collaborator } = initSchema(schema);
 
 export {
   Post,
-  PostStatus
+  Project,
+  Task,
+  Collaborator,
+  PostStatus,
+  TaskStatus
 };
