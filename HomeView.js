@@ -49,7 +49,7 @@ const HomeView = ({ user, signOut }) => {
             <View style={styles.containertitulo}>
                 <Text style={styles.title}>¡Bienvenid@ {user.username}, a TaskVerse!</Text>
                 <TouchableOpacity onPress={signOut}>
-                    <Text>Cerrar sesión</Text>
+                    <Text style={styles.signoff}>Cerrar sesión</Text>
                 </TouchableOpacity>
             </View>
         
@@ -68,17 +68,22 @@ const styles = StyleSheet.create({
   container: {
     fontFamily: 'Poppins-Bold.ttf',
     flex: 1,
-
   },
   containertitulo: {
-    backgroundColor: 'lightgray'
+    paddingTop: 20,
+    backgroundColor: '#A60321',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginVertical:20,
     textAlign: 'center',
-    backgroundColor: 'lightgray'
+    backgroundColor: '#A60321',
+    color: '#F29C6B',
+  },
+  signoff: {
+    fontSize: 19,
+    color: '#F29C6B',
   },
   tabBar: {
     flexDirection: 'row',
@@ -91,11 +96,11 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   tabItemActive: {
-    backgroundColor: '#FFC7C7',
+    backgroundColor: '#F29C6B',
   },
   tabItemText: {
     fontWeight: 'bold',
-    color: '#E33636'
+    color: '#A60321',
   },
   sceneContainer: {
     flex: 1,

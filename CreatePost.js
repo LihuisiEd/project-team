@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 import { Post, PostStatus } from './src/models';
 
 const CreatePostForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-
 
   const createPost = async () => {
     const post = new Post({
@@ -19,24 +18,28 @@ const CreatePostForm = () => {
   
     setTitle('');
     setContent('');
-  
   };
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Title"
+        placeholder="Nombre"
         value={title}
         onChangeText={setTitle}
       />
       <TextInput
         style={styles.input}
-        placeholder="Content"
+        placeholder="Número o Correo"
         value={content}
         onChangeText={setContent}
       />
-      <Button title="Create Post" onPress={createPost} />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={createPost}
+      >
+        <Text style={styles.buttonText}>Agregar</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -51,6 +54,19 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
   },
+  button: {
+    backgroundColor: '#A60321',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#F29C6B',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 });
 
 export default CreatePostForm;
+
+
+

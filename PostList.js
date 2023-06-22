@@ -30,7 +30,7 @@ const PostList = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Posts</Text>
+      <Text style={styles.title}>Compañeros</Text>
       <FlatList
         data={posts}
         keyExtractor={(item) => item.id}
