@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Button, 
 import { TabView, SceneMap } from 'react-native-tab-view';
 import PostList from './PostList';
 import CreatePostForm from './CreatePost';
+import ProjectScreen from './ProjectScreen';
+import TaskScreen from './TaskScreen';
+import ColaboratorScreen from './ColaboratorScreen';
 
 const HomeView = ({ user, signOut }) => {
   const [index, setIndex] = useState(0);
@@ -10,8 +13,7 @@ const HomeView = ({ user, signOut }) => {
   const [routes] = useState([
     { key: '1', title: 'Compañeros' },
     { key: '2', title: 'Proyectos' },
-    { key: '3', title: 'Grupos' },
-    { key: '4', title: 'Tareas' },
+    { key: '3', title: 'Tareas' },
   ]);
 
   const renderScene = SceneMap({
@@ -25,9 +27,24 @@ const HomeView = ({ user, signOut }) => {
           )}
         </View>
       ),
-    '2': () => <Text>{routes[1].title}</Text>,
-    '3': () => <Text>{routes[2].title}</Text>,
-    '4': () => <Text>{routes[3].title}</Text>,
+    '2': () => (
+      <View style={styles.sceneContainer}>
+        {routes[1].title === 'Proyectos' && (
+          <View>
+              <ProjectScreen />
+          </View>
+        )}
+      </View>
+    ),
+    '3': () => (
+      <View style={styles.sceneContainer}>
+        {routes[2].title === 'Tareas' && (
+          <View>
+              <TaskScreen />
+          </View>
+        )}
+      </View>
+    ),
   });
 
   const renderTabBar = (props) => (

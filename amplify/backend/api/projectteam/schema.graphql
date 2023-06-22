@@ -16,3 +16,38 @@ enum PostStatus {
   ACTIVE
   INACTIVE
 }
+
+type User @model {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+  projects: [Project] @hasMany(indexName: "byUser", fields: ["userId"])
+}
+
+type Project @model {
+  id: ID!
+  projectName: String!
+  description: String!
+  createdAt: AWSDateTime!
+  userId: ID!
+  user: User @belongsTo(fields: ["userId"])
+  tasks: [Task] @hasMany(indexName: "byProject", fields: ["projectId"])
+}
+
+type Task @model {
+  id: ID!
+  taskName: String!
+  description: String!
+  status: TaskStatus!
+  startDate: AWSDateTime!
+  endDate: AWSDateTime
+  projectId: ID!
+  project: Project @belongsTo(fields: ["projectId"])
+}
+
+enum TaskStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
