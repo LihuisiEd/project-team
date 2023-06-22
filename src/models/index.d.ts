@@ -12,29 +12,27 @@ export enum PostStatus {
 type EagerPost = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Post, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly title: string;
   readonly status: PostStatus | keyof typeof PostStatus;
   readonly rating?: number | null;
   readonly content?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
 type LazyPost = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Post, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
   readonly title: string;
   readonly status: PostStatus | keyof typeof PostStatus;
   readonly rating?: number | null;
   readonly content?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
 export declare type Post = LazyLoading extends LazyLoadingDisabled ? EagerPost : LazyPost

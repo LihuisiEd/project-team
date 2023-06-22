@@ -29,7 +29,7 @@ export const schema = {
                 "rating": {
                     "name": "rating",
                     "isArray": false,
-                    "type": "Int",
+                    "type": "Float",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -44,17 +44,15 @@ export const schema = {
                     "name": "createdAt",
                     "isArray": false,
                     "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "updatedAt": {
                     "name": "updatedAt",
                     "isArray": false,
                     "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
+                    "isRequired": true,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -78,5 +76,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "c8f7b72ad6040a2f04d1500f59aa83e0"
+    "version": "ebdc7b9f8edd3c81d62c332269ea80a3"
 };
