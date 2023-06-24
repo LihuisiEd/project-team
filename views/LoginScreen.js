@@ -1,25 +1,31 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground,Image } from 'react-native';
-import HomeView from './HomeView';
+import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground, Image } from 'react-native';
+import { Amplify, Auth } from 'aws-amplify';
+import { DataStore } from 'aws-amplify';
 
-const imageBackground = require('./assets/background.jpg');
-const logoImage = require('./assets/TaskVerse.png');
+const imageBackground = require('../assets/background.jpg');
+const logoImage = require('../assets/TaskVerse.png');
 
-export default function RegisterScreen({ signUp, setUser, navigation }) {
+export default function LoginScreen({ signIn, navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleSignUp = async () => {
-    await signUp(username, password, email, "+51" + phoneNumber);
-    navigation.navigate('Home');
+  const handleSignIn = async () => {
+    await signIn(username, password);
+  };
+
+  const handleVerification = () => {
+    navigation.navigate('Verification');
+  };
+
+  const handleRegister = () => {
+    navigation.navigate('Register');
   };
 
   return (
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
       <View style={styles.container}>
-      <Image source={logoImage} style={styles.logo}  />
+        <Image source={logoImage} style={styles.logo} />
         <TextInput
           style={styles.input}
           placeholder="Usuario"
@@ -33,20 +39,15 @@ export default function RegisterScreen({ signUp, setUser, navigation }) {
           value={password}
           onChangeText={setPassword}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Correo electrónico"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Número de teléfono"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
-        <Pressable onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Registrarse</Text>
+
+        <Pressable onPress={handleSignIn} style={styles.button}>
+          <Text style={styles.buttonText}>Iniciar sesión</Text>
+        </Pressable>
+        <Pressable onPress={handleRegister}>
+          <Text style={styles.registerText}>¿No tienes una cuenta? Regístrate</Text>
+        </Pressable>
+        <Pressable onPress={handleVerification}>
+          <Text style={styles.registerText}>¿Tienes un código de verificación?</Text>
         </Pressable>
       </View>
     </ImageBackground>
@@ -88,4 +89,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  registerText: {
+    marginTop: 10,
+    color: '#A60321',
+    textDecorationLine: 'underline',
+  },
 });
+
+
+

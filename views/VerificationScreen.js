@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground, Image } from 'react-native';
 import { Auth } from 'aws-amplify';
 
-const imageBackground = require('./assets/background.jpg');
-const logoImage = require('./assets/TaskVerse.png');
+const imageBackground = require('../assets/background.jpg');
+const logoImage = require('../assets/TaskVerse.png');
 
 export default function VerificationScreen() {
   const [username, setUsername] = useState('');
@@ -13,6 +13,7 @@ export default function VerificationScreen() {
     try {
       await Auth.confirmSignUp(username, verificationCode);
       console.log('Cuenta confirmada correctamente');
+      navigation.navigate('Home');
     } catch (error) {
       console.log('Error al confirmar la cuenta:', error);
     }

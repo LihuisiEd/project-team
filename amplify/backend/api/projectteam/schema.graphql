@@ -21,17 +21,36 @@ type Project @model {
   id: ID!
   projectName: String!
   description: String!
+  creatorID: String!
   createdAt: AWSDateTime!
+}
+
+type User @model {
+  id: ID!
+  name: String!
+  email: String!
+  phoneNumber: String!
+  createdAt: AWSDateTime!
+  projects: [Project] @hasMany
+  companions: [Companion] @hasMany
+}
+
+type Companion @model {
+  id: ID!
+  userID: ID!
+  user: User @belongsTo
+  companionID: ID!
+  companion: User @belongsTo
 }
 
 type Task @model {
   id: ID!
-  taskName: String!
+  name: String!
   description: String!
-  status: TaskStatus!
+  status: String!
+  projectID: String!
   startDate: AWSDateTime!
-  endDate: AWSDateTime
-  project: ID!
+  endDate: AWSDateTime!
 }
 
 enum TaskStatus {
@@ -42,6 +61,6 @@ enum TaskStatus {
 
 type Collaborator @model {
   id: ID!
-  userID: ID!
-  projectID: ID!
+  userID: String!
+  projectID: String!
 }

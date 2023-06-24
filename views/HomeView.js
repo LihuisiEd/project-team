@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Button, Image } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
-import PostList from './PostList';
-import CreatePostForm from './CreatePost';
 import ProjectScreen from './ProjectScreen';
 import TaskScreen from './TaskScreen';
-import ColaboratorScreen from './ColaboratorScreen';
+import CollaboratorScreen from './CollaboratorScreen';
 
 const HomeView = ({ user, signOut }) => {
+  const navigation = useNavigation();
   const [index, setIndex] = useState(0);
-  const [posts, setPosts] = useState([]);
   const [routes] = useState([
     { key: '1', title: 'Compañeros' },
     { key: '2', title: 'Proyectos' },
@@ -18,20 +17,19 @@ const HomeView = ({ user, signOut }) => {
 
   const renderScene = SceneMap({
     '1': () => (
-        <View style={styles.sceneContainer}>
-          {routes[0].title === 'Compañeros' && (
-            <View>
-                <ColaboratorScreen />
-                
-            </View>
-          )}
-        </View>
-      ),
+      <View style={styles.sceneContainer}>
+        {routes[0].title === 'Compañeros' && (
+          <View>
+            <CollaboratorScreen user={user} />
+          </View>
+        )}
+      </View>
+    ),
     '2': () => (
       <View style={styles.sceneContainer}>
         {routes[1].title === 'Proyectos' && (
           <View>
-              <ProjectScreen />
+            <ProjectScreen />
           </View>
         )}
       </View>
@@ -40,7 +38,7 @@ const HomeView = ({ user, signOut }) => {
       <View style={styles.sceneContainer}>
         {routes[2].title === 'Tareas' && (
           <View>
-              <TaskScreen />
+            <TaskScreen />
           </View>
         )}
       </View>
@@ -61,24 +59,32 @@ const HomeView = ({ user, signOut }) => {
     </View>
   );
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.containertitulo}>
-                <Text style={styles.title}>¡Bienvenid@ {user.username}, a TaskVerse!</Text>
-                <TouchableOpacity onPress={signOut}>
-                    <Text style={styles.signoff}>Cerrar sesión</Text>
-                </TouchableOpacity>
-            </View>
-        
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={renderScene}
-                renderTabBar={renderTabBar}
-                onIndexChange={setIndex}
-                initialLayout={{ width: 300 }}
-            />
-        </View>
-    );
+  const handlePerfil = () => {
+    navigation.navigate('Perfil');
+  };
+
+  return (
+    <View style={styles.container}>
+
+      <View style={styles.containertitulo}>
+        <Text style={styles.title}>¡Bienvenid@ {user.username}, a TaskVerse!</Text>
+        <TouchableOpacity onPress={signOut}>
+          <Text style={styles.signoff}>Cerrar sesión</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handlePerfil}>
+          <Text style={styles.signoff}>Perfil</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setIndex}
+        initialLayout={{ width: 300 }}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginVertical:20,
+    marginVertical: 20,
     textAlign: 'center',
     backgroundColor: '#A60321',
     color: '#F29C6B',
@@ -104,7 +110,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: 'row',
-    margin:15
+    margin: 15
   },
   tabItem: {
     flex: 1,
@@ -159,7 +165,7 @@ const styles = StyleSheet.create({
   userButtonText: {
     color: 'white',
   },
-  
+
 });
 
 export default HomeView;

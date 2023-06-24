@@ -70,11 +70,13 @@ export const createProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      userProjectsId
       __typename
     }
   }
@@ -88,11 +90,13 @@ export const updateProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      userProjectsId
       __typename
     }
   }
@@ -106,11 +110,364 @@ export const deleteProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      userProjectsId
+      __typename
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    deleteUser(input: $input, condition: $condition) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const createCompanion = /* GraphQL */ `
+  mutation CreateCompanion(
+    $input: CreateCompanionInput!
+    $condition: ModelCompanionConditionInput
+  ) {
+    createCompanion(input: $input, condition: $condition) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
+      __typename
+    }
+  }
+`;
+export const updateCompanion = /* GraphQL */ `
+  mutation UpdateCompanion(
+    $input: UpdateCompanionInput!
+    $condition: ModelCompanionConditionInput
+  ) {
+    updateCompanion(input: $input, condition: $condition) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
+      __typename
+    }
+  }
+`;
+export const deleteCompanion = /* GraphQL */ `
+  mutation DeleteCompanion(
+    $input: DeleteCompanionInput!
+    $condition: ModelCompanionConditionInput
+  ) {
+    deleteCompanion(input: $input, condition: $condition) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
       __typename
     }
   }
@@ -122,12 +479,12 @@ export const createTask = /* GraphQL */ `
   ) {
     createTask(input: $input, condition: $condition) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version
@@ -144,12 +501,12 @@ export const updateTask = /* GraphQL */ `
   ) {
     updateTask(input: $input, condition: $condition) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version
@@ -166,12 +523,12 @@ export const deleteTask = /* GraphQL */ `
   ) {
     deleteTask(input: $input, condition: $condition) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version

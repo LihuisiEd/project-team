@@ -58,11 +58,13 @@ export const onCreateProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      userProjectsId
       __typename
     }
   }
@@ -73,11 +75,13 @@ export const onUpdateProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      userProjectsId
       __typename
     }
   }
@@ -88,7 +92,60 @@ export const onDeleteProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userProjectsId
+      __typename
+    }
+  }
+`;
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser($filter: ModelSubscriptionUserFilterInput) {
+    onCreateUser(filter: $filter) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
       updatedAt
       _version
       _deleted
@@ -97,16 +154,304 @@ export const onDeleteProject = /* GraphQL */ `
     }
   }
 `;
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser($filter: ModelSubscriptionUserFilterInput) {
+    onUpdateUser(filter: $filter) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser($filter: ModelSubscriptionUserFilterInput) {
+    onDeleteUser(filter: $filter) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const onCreateCompanion = /* GraphQL */ `
+  subscription OnCreateCompanion(
+    $filter: ModelSubscriptionCompanionFilterInput
+  ) {
+    onCreateCompanion(filter: $filter) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
+      __typename
+    }
+  }
+`;
+export const onUpdateCompanion = /* GraphQL */ `
+  subscription OnUpdateCompanion(
+    $filter: ModelSubscriptionCompanionFilterInput
+  ) {
+    onUpdateCompanion(filter: $filter) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
+      __typename
+    }
+  }
+`;
+export const onDeleteCompanion = /* GraphQL */ `
+  subscription OnDeleteCompanion(
+    $filter: ModelSubscriptionCompanionFilterInput
+  ) {
+    onDeleteCompanion(filter: $filter) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
+      __typename
+    }
+  }
+`;
 export const onCreateTask = /* GraphQL */ `
   subscription OnCreateTask($filter: ModelSubscriptionTaskFilterInput) {
     onCreateTask(filter: $filter) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version
@@ -120,12 +465,12 @@ export const onUpdateTask = /* GraphQL */ `
   subscription OnUpdateTask($filter: ModelSubscriptionTaskFilterInput) {
     onUpdateTask(filter: $filter) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version
@@ -139,12 +484,12 @@ export const onDeleteTask = /* GraphQL */ `
   subscription OnDeleteTask($filter: ModelSubscriptionTaskFilterInput) {
     onDeleteTask(filter: $filter) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version

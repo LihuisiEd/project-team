@@ -13,11 +13,13 @@ const TaskStatus = {
   "COMPLETED": "COMPLETED"
 };
 
-const { Post, Project, Task, Collaborator } = initSchema(schema);
+const { Post, Project, User, Companion, Task, Collaborator } = initSchema(schema);
 
 export {
   Post,
   Project,
+  User,
+  Companion,
   Task,
   Collaborator,
   PostStatus,

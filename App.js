@@ -5,10 +5,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { DataStore } from 'aws-amplify';
 
 
-import HomeView from './HomeView';
-import LoginScreen from './LoginScreen';
-import RegisterScreen from './RegisterScreen';
-import VerificationScreen from './VerificationScreen';
+import HomeView from './views/HomeView';
+import LoginScreen from './views/LoginScreen';
+import RegisterScreen from './views/RegisterScreen';
+import VerificationScreen from './views/VerificationScreen'
+import PerfilScreen from './views/PerfilScreen';
+import AddColaborator from './views/AddCollaborator';
+
 
 // Amplify
 import { Amplify, Auth } from 'aws-amplify';
@@ -17,24 +20,12 @@ Amplify.configure(awsconfig);
 
 
 export default function App() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [user, setUser] = useState(null);
 
   const Stack = createStackNavigator();
 
   useEffect(() => {
     checkAuthState();
-    const loadFonts = async () => {
-      await Font.loadAsync({
-        'poppins-regular': require('./assets/fonts/Poppins-Regular.ttf'),
-        'poppins-bold': require('./assets/fonts/Poppins-Bold.ttf'),
-        // Agrega aquí más estilos o variantes de la fuente Poppins que necesites
-      });
-    };
-    loadFonts();
   }, []);
 
   async function checkAuthState() {
@@ -46,13 +37,11 @@ export default function App() {
     }
   }
 
-  
-
   async function signIn(username, password) {
     try {
       const user = await Auth.signIn(username, password);
       if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
- 
+
       } else {
         setUser(user);
         console.log('Inicio de sesión exitoso para', user);
@@ -90,7 +79,7 @@ export default function App() {
       console.log('Error al cerrar sesión', error);
     }
   }
-  
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -113,8 +102,15 @@ export default function App() {
                 <VerificationScreen {...props} signUp={signUp} setUser={setUser} />
               )}
             </Stack.Screen>
+
           </>
         )}
+        <Stack.Screen name="Perfil">
+          {(props) => <PerfilScreen {...props} user={user} />}
+        </Stack.Screen>
+        <Stack.Screen name="AddCollaborator">
+          {(props) => <AddColaborator {...props} user={user} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -122,7 +118,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    fontFamily: 'poppins-bold',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

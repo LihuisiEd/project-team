@@ -82,11 +82,13 @@ export const getProject = /* GraphQL */ `
       id
       projectName
       description
+      creatorID
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      userProjectsId
       __typename
     }
   }
@@ -102,11 +104,13 @@ export const listProjects = /* GraphQL */ `
         id
         projectName
         description
+        creatorID
         createdAt
         updatedAt
         _version
         _deleted
         _lastChangedAt
+        userProjectsId
         __typename
       }
       nextToken
@@ -132,7 +136,95 @@ export const syncProjects = /* GraphQL */ `
         id
         projectName
         description
+        creatorID
         createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userProjectsId
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
+      id
+      name
+      email
+      phoneNumber
+      createdAt
+      projects {
+        items {
+          id
+          projectName
+          description
+          creatorID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userProjectsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      companions {
+        items {
+          id
+          userID
+          companionID
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          userCompanionsId
+          __typename
+        }
+        nextToken
+        startedAt
+        __typename
+      }
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
         updatedAt
         _version
         _deleted
@@ -145,16 +237,221 @@ export const syncProjects = /* GraphQL */ `
     }
   }
 `;
+export const syncUsers = /* GraphQL */ `
+  query SyncUsers(
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncUsers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const getCompanion = /* GraphQL */ `
+  query GetCompanion($id: ID!) {
+    getCompanion(id: $id) {
+      id
+      userID
+      user {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      companionID
+      companion {
+        id
+        name
+        email
+        phoneNumber
+        createdAt
+        projects {
+          nextToken
+          startedAt
+          __typename
+        }
+        companions {
+          nextToken
+          startedAt
+          __typename
+        }
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      userCompanionsId
+      __typename
+    }
+  }
+`;
+export const listCompanions = /* GraphQL */ `
+  query ListCompanions(
+    $filter: ModelCompanionFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listCompanions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        user {
+          id
+          name
+          email
+          phoneNumber
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        companionID
+        companion {
+          id
+          name
+          email
+          phoneNumber
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userCompanionsId
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
+export const syncCompanions = /* GraphQL */ `
+  query SyncCompanions(
+    $filter: ModelCompanionFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncCompanions(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        userID
+        user {
+          id
+          name
+          email
+          phoneNumber
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        companionID
+        companion {
+          id
+          name
+          email
+          phoneNumber
+          createdAt
+          updatedAt
+          _version
+          _deleted
+          _lastChangedAt
+          __typename
+        }
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        userCompanionsId
+        __typename
+      }
+      nextToken
+      startedAt
+      __typename
+    }
+  }
+`;
 export const getTask = /* GraphQL */ `
   query GetTask($id: ID!) {
     getTask(id: $id) {
       id
-      taskName
+      name
       description
       status
+      projectID
       startDate
       endDate
-      project
       createdAt
       updatedAt
       _version
@@ -173,12 +470,12 @@ export const listTasks = /* GraphQL */ `
     listTasks(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        taskName
+        name
         description
         status
+        projectID
         startDate
         endDate
-        project
         createdAt
         updatedAt
         _version
@@ -207,12 +504,12 @@ export const syncTasks = /* GraphQL */ `
     ) {
       items {
         id
-        taskName
+        name
         description
         status
+        projectID
         startDate
         endDate
-        project
         createdAt
         updatedAt
         _version
