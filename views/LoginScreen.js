@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground, Image, Alert } from 'react-native';
 import { Amplify, Auth } from 'aws-amplify';
 import { DataStore } from 'aws-amplify';
 
@@ -9,9 +9,15 @@ const logoImage = require('../assets/TaskVerse.png');
 export default function LoginScreen({ signIn, navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
 
   const handleSignIn = async () => {
-    await signIn(username, password);
+    if ( (await signIn(username, password)) == true){
+      await signIn(username, password);
+      
+    } else {
+      setShowAlert(true);
+    }
   };
 
   const handleVerification = () => {
@@ -21,7 +27,9 @@ export default function LoginScreen({ signIn, navigation }) {
   const handleRegister = () => {
     navigation.navigate('Register');
   };
-
+  const closeAlert = () => {
+    setShowAlert(false);
+  };
   return (
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
       <View style={styles.container}>
@@ -49,6 +57,16 @@ export default function LoginScreen({ signIn, navigation }) {
         <Pressable onPress={handleVerification}>
           <Text style={styles.registerText}>¿Tienes un código de verificación?</Text>
         </Pressable>
+        
+        {showAlert && (
+          <View style={styles.alertContainer}>
+            <Text style={styles.alertText}>Contraseña incorrecta. Por favor, verifica tu contraseña.</Text>
+            <Pressable onPress={closeAlert} style={styles.alertButton}>
+              <Text style={styles.alertButtonText}>Cerrar</Text>
+            </Pressable>
+          </View>
+        )}
+    
       </View>
     </ImageBackground>
   );
@@ -93,6 +111,30 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: '#A60321',
     textDecorationLine: 'underline',
+  },
+  alertContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 20,
+    borderRadius: 5,
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 20,
+  },
+  alertText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  alertButton: {
+    backgroundColor: '#A60321',
+    padding: 10,
+    borderRadius: 5,
+  },
+  alertButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
