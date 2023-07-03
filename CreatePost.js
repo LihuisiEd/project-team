@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 import { Post, PostStatus } from './src/models';
 
@@ -7,19 +7,19 @@ const CreatePostForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
 
-
   const createPost = async () => {
     const post = new Post({
       title: title,
       content: content,
       status: PostStatus.ACTIVE,
     });
-  
+
     await DataStore.save(post);
-  
+
     setTitle('');
     setContent('');
-  
+
+    Alert.alert('Mensaje', '¡Hola mundo!');
   };
 
   return (

@@ -9,7 +9,7 @@ export default function RegisterScreen({ signUp, setUser, navigation }) {
 
   const handleSignUp = async () => {
     await signUp(username, password, email, "+51" + phoneNumber);
-    navigation.navigate('Home');
+    navigation.navigate('HomeView');
   };
 
   return (

@@ -4,6 +4,12 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import PostList from './PostList';
 import CreatePostForm from './CreatePost';
 
+
+/*  Importaciones de pestaña Proyectos */
+import ProjectList from './proyectos/ProjectList';
+/* Fin Importaciones de pestaña Proyectos */
+
+
 const HomeView = ({ user, signOut }) => {
   const [index, setIndex] = useState(0);
   const [posts, setPosts] = useState([]);
@@ -25,7 +31,18 @@ const HomeView = ({ user, signOut }) => {
           )}
         </View>
       ),
-    '2': () => <Text>{routes[1].title}</Text>,
+    
+    '2': () => (
+        <View style={styles.sceneContainer}>
+          {routes[1].title === 'Proyectos' && (
+            <View>
+                <ProjectList /> 
+  
+            </View>
+          )}
+        </View>
+      ),
+    
     '3': () => <Text>{routes[2].title}</Text>,
     '4': () => <Text>{routes[3].title}</Text>,
   });
@@ -137,6 +154,7 @@ const styles = StyleSheet.create({
   userButtonText: {
     color: 'white',
   },
+  
   
 });
 
