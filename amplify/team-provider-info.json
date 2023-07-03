@@ -17,6 +17,15 @@
       },
       "auth": {
         "projectteamd3ec5e70": {}
+      },
+      "function": {
+        "S3Triggera9482b2d": {
+          "deploymentBucketName": "amplify-projectteam-dev-205817-deployment",
+          "s3Key": "amplify-builds/S3Triggera9482b2d-505a5034632f2b5a6d76-build.zip"
+        }
+      },
+      "storage": {
+        "storagetask": {}
       }
     }
   }

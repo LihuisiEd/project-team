@@ -16,5 +16,20 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolId": "string",
       "UserPoolName": "string"
     }
+  },
+  "function": {
+    "S3Triggera9482b2d": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "storagetask": {
+      "BucketName": "string",
+      "Region": "string"
+    }
   }
 }

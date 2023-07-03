@@ -1,0 +1,14 @@
+{
+  "resourceName": "storagetask",
+  "policyUUID": "e8d61376",
+  "bucketName": "projectteamdbstoragetask",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "S3Triggera9482b2d",
+  "groupAccess": {}
+}

@@ -5,7 +5,7 @@ import { User, Companion } from '../src/models';
 
 const CollaboratorList = ({ onAddCollaborator }) => {
     const [users, setUsers] = useState([]);
-
+    //Este es un ejemplo de cambio
     useEffect(() => {
         const fetchUsers = async () => {
             try {
