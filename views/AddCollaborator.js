@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Companion } from '../src/models';
+import Swal from 'sweetalert2'
 
 const AddColaborator = ({ user }) => {
   const [users, setUsers] = useState([]);
@@ -29,6 +30,7 @@ const AddColaborator = ({ user }) => {
         return;
       }
       if (currentUser[0].id === selectedUser) {
+        Swal.fire({icon: 'error',title: 'Oops...', text: '¡No puedes incluirte a ti mismo como compañero!'}, 'success');
         console.log('No puedes incluirte a ti mismo como compañero');
         return;
       }
