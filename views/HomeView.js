@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import ProjectScreen from './ProjectScreen';
 import TaskScreen from './TaskScreen';
 import CollaboratorScreen from './CollaboratorScreen';
 import Proyectos from './Proyectos';
 import Calendario from './Calendario';
-
 
 const HomeView = ({ user, signOut }) => {
   const navigation = useNavigation();
@@ -32,11 +31,12 @@ const HomeView = ({ user, signOut }) => {
       <View style={styles.sceneContainer}>
         {routes[1].title === 'Proyectos' && (
           <View>
-              <Proyectos />
-              <Calendario />
+            <Proyectos />
+            <Calendario />
           </View>
         )}
-      </View>),
+      </View>
+    ),
     '3': () => (
       <View style={styles.sceneContainer}>
         {routes[2].title === 'Tareas' && (
@@ -68,17 +68,17 @@ const HomeView = ({ user, signOut }) => {
 
   return (
     <View style={styles.container}>
-
       <View style={styles.containertitulo}>
         <Text style={styles.title}>¡Bienvenid@ {user.username}, a TaskVerse!</Text>
-        <TouchableOpacity onPress={signOut}>
-          <Text style={styles.signoff}>Cerrar sesión</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlePerfil}>
+      </View>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity style={[styles.buttonContainer, styles.leftButton]} onPress={handlePerfil}>
           <Text style={styles.signoff}>Perfil</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={[styles.buttonContainer, styles.rightButton]} onPress={signOut}>
+          <Text style={styles.signoff}>Cerrar sesión</Text>
+        </TouchableOpacity>
       </View>
-
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
@@ -92,12 +92,13 @@ const HomeView = ({ user, signOut }) => {
 
 const styles = StyleSheet.create({
   container: {
-    fontFamily: 'Poppins-Bold.ttf',
     flex: 1,
   },
   containertitulo: {
-    paddingTop: 20,
+    paddingTop: 4,
     backgroundColor: '#A60321',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   title: {
     fontSize: 24,
@@ -110,16 +111,39 @@ const styles = StyleSheet.create({
   signoff: {
     fontSize: 19,
     color: '#F29C6B',
+    marginLeft: 10,
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 15,
+    backgroundColor: '#A60321',
+    marginLeft: 30,
+    marginRight: 30,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  leftButton: {
+    marginRight: 5,
+  },
+  rightButton: {
+    marginLeft: 5,
   },
   tabBar: {
     flexDirection: 'row',
-    margin: 15
+    margin: 15,
   },
   tabItem: {
     flex: 1,
     paddingVertical: 10,
     alignItems: 'center',
-    borderRadius: 10
+    borderRadius: 10,
   },
   tabItemActive: {
     backgroundColor: '#F29C6B',
@@ -131,44 +155,6 @@ const styles = StyleSheet.create({
   sceneContainer: {
     flex: 1,
   },
-  userContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: 30,
-    marginTop: 20
-  },
-  userImageContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    overflow: 'hidden',
-    marginRight: 10,
-  },
-  userImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  userInfo: {
-    flex: 1,
-  },
-  userName: {
-    fontWeight: 'bold',
-  },
-  userActions: {
-    flexDirection: 'row',
-  },
-  userButton: {
-    borderRadius: 50,
-    paddingHorizontal: 8,
-    paddingVertical: 5,
-    backgroundColor: '#E33636',
-    marginLeft: 10,
-  },
-  userButtonText: {
-    color: 'white',
-  },
-
 });
 
 export default HomeView;
