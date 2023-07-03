@@ -166,7 +166,7 @@ const PerfilScreen = ({ user }) => {
         formData.append('userId', perfilUser.id);
         formData.append('image', blobImage, 'profile_photo.jpg');
 
-        const response = await axios.post('http://localhost:3000/api/upload', formData, {
+        const response = await axios.post('http://taskverse-api-env.eba-hzcetw9a.us-east-1.elasticbeanstalk.com/api/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
