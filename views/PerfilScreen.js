@@ -111,7 +111,7 @@ const PerfilScreen = ({ user }) => {
   const loadProfileImage = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:3000/api/images/${perfilUser.id}/profile_photo`, {
+      const response = await axios.get(`http://taskverse-api-env.eba-hzcetw9a.us-east-1.elasticbeanstalk.com/api/images/${perfilUser.id}/profile_photo`, {
         responseType: 'arraybuffer',
       });
 
