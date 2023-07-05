@@ -1,76 +1,3 @@
-// import React, { useState, useEffect } from 'react';
-// import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-// import { DataStore } from '@aws-amplify/datastore';
-// import { User } from '../src/models';
-
-// const PerfilScreen = ({ user }) => {
-//   const [perfilUser, setPerfilUser] = useState(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const loadPerfilUser = async () => {
-//       try {
-//         const currentUser = await DataStore.query(User, (u) =>
-//           u.name.eq(user.username.toLowerCase())
-//         );
-
-//         if (currentUser.length === 0) {
-//           console.log('Usuario logueado no encontrado');
-//           return;
-//         }
-
-//         setPerfilUser(currentUser[0]);
-//         setLoading(false);
-//       } catch (error) {
-//         console.log('Error al cargar el perfil del usuario:', error);
-//       }
-//     };
-
-//     loadPerfilUser();
-//   }, [user]);
-
-//   if (loading) {
-//     return (
-//       <View style={styles.loadingContainer}>
-//         <ActivityIndicator size="large" color="#000000" />
-//       </View>
-//     );
-//   }
-
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.label}>Nombre de usuario:</Text>
-//       <Text style={styles.text}>{perfilUser.name}</Text>
-//       <Text style={styles.label}>Email de usuario:</Text>
-//       <Text style={styles.text}>{perfilUser.email}</Text>
-//       <Text style={styles.label}>Teléfono de usuario:</Text>
-//       <Text style={styles.text}>{perfilUser.phoneNumber}</Text>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     padding: 16,
-//   },
-//   loadingContainer: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   label: {
-//     fontSize: 16,
-//     fontWeight: 'bold',
-//     marginBottom: 8,
-//   },
-//   text: {
-//     fontSize: 14,
-//   },
-// });
-
-// export default PerfilScreen;
-
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Image, ImageBackground, TouchableOpacity, Button, TextInput, Platform } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
@@ -228,22 +155,23 @@ const PerfilScreen = ({ user }) => {
   return (
     <ImageBackground source={require('../assets/background.jpg')} style={styles.backgroundImage}>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.profileImageContainer}
-          onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
-        >
-          <View style={styles.profileContainer}>
-            {loading ? (
-              <ActivityIndicator size="large" color="#0000ff" />
-            ) : profileImage ? (
-              <Image source={{ uri: profileImage }} style={styles.profileImage} />
-            ) : (
-              <Image source={require('../assets/perfil.jpg')} style={styles.profileImage} />
-            )}
-            <Text style={styles.editPhotoText}>{isEditMode ? 'Guardar Foto' : 'Editar Foto'}</Text>
-          </View>
-        </TouchableOpacity>
         <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.profileImageContainer}
+            onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
+          >
+            <View style={styles.profileContainer}>
+              {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+              ) : profileImage ? (
+                <Image source={{ uri: profileImage }} style={styles.profileImage} />
+              ) : (
+                <Image source={require('../assets/perfil.jpg')} style={styles.profileImage} />
+              )}
+              <Text style={styles.editPhotoText}>{isEditMode ? 'Guardar Foto' : 'Editar Foto'}</Text>
+            </View>
+          </TouchableOpacity>
+
           <Text style={styles.label}>Nombre de usuario:</Text>
           <Text style={styles.text}>{perfilUser.name}</Text>
           <Text style={styles.label}>Email de usuario:</Text>

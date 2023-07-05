@@ -6,7 +6,7 @@ const ProjectScreen = () => {
   return (
     <View>
       <Text>Hola, este es el archivo ProjectScreen.js</Text>
-
+      
     </View>
   );
 };
