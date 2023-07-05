@@ -155,22 +155,23 @@ const PerfilScreen = ({ user }) => {
   return (
     <ImageBackground source={require('../assets/background.jpg')} style={styles.backgroundImage}>
       <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.profileImageContainer}
-          onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
-        >
-          <View style={styles.profileContainer}>
-            {loading ? (
-              <ActivityIndicator size="large" color="#0000ff" />
-            ) : profileImage ? (
-              <Image source={{ uri: profileImage }} style={styles.profileImage} />
-            ) : (
-              <Image source={require('../assets/perfil.jpg')} style={styles.profileImage} />
-            )}
-            <Text style={styles.editPhotoText}>{isEditMode ? 'Guardar Foto' : 'Editar Foto'}</Text>
-          </View>
-        </TouchableOpacity>
         <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.profileImageContainer}
+            onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
+          >
+            <View style={styles.profileContainer}>
+              {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" />
+              ) : profileImage ? (
+                <Image source={{ uri: profileImage }} style={styles.profileImage} />
+              ) : (
+                <Image source={require('../assets/perfil.jpg')} style={styles.profileImage} />
+              )}
+              <Text style={styles.editPhotoText}>{isEditMode ? 'Guardar Foto' : 'Editar Foto'}</Text>
+            </View>
+          </TouchableOpacity>
+
           <Text style={styles.label}>Nombre de usuario:</Text>
           <Text style={styles.text}>{perfilUser.name}</Text>
           <Text style={styles.label}>Email de usuario:</Text>
