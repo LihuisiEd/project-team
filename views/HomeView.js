@@ -5,9 +5,9 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import ProjectScreen from './ProjectScreen';
 import TaskScreen from './TaskScreen';
 import CollaboratorScreen from './CollaboratorScreen';
-import Proyectos from './Proyectos';
+import ProjectList from './ProjectList';
 import Calendario from './Calendario';
-
+import { ScrollView } from 'react-native';
 const HomeView = ({ user, signOut }) => {
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
@@ -31,12 +31,11 @@ const HomeView = ({ user, signOut }) => {
       <View style={styles.sceneContainer}>
         {routes[1].title === 'Proyectos' && (
           <View>
-            <Proyectos />
-            <Calendario />
+              <Proyectos />
+              <Calendario />
           </View>
         )}
-      </View>
-    ),
+      </View>),
     '3': () => (
       <View style={styles.sceneContainer}>
         {routes[2].title === 'Tareas' && (

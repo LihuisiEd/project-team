@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Companion } from '../src/models';
 
+
 const CollaboratorScreen = ({ user }) => {
   const navigation = useNavigation();
   const [companions, setCompanions] = useState([]);
@@ -15,6 +16,7 @@ const CollaboratorScreen = ({ user }) => {
   };
 
   const getUserById = async (userId) => {
+    
     try {
       const fetchedUser = await DataStore.query(User, userId);
       return fetchedUser;
@@ -35,6 +37,10 @@ const CollaboratorScreen = ({ user }) => {
 
   useEffect(() => {
     const fetchCompanions = async () => {
+      if (!user || !user.username) {
+        console.log('Usuario no válido');
+        return;
+      }
       try {
         const currentUser = await DataStore.query(User, (u) => u.name.eq(user.username.toLowerCase()));
 
@@ -65,10 +71,6 @@ const CollaboratorScreen = ({ user }) => {
       try {
         const currentUser = await DataStore.query(User, (u) => u.name.eq(user.username.toLowerCase()));
 
-        if (currentUser.length === 0) {
-          console.log('Usuario logueado no encontrado');
-          return;
-        }
 
         const fetchedCompanionOf = await DataStore.query(Companion, (c) =>
           c.companionID.eq(currentUser[0].id)
@@ -117,6 +119,7 @@ const CollaboratorScreen = ({ user }) => {
     <View style={styles.container}>
       <Button onPress={handleAddCollaborator} title="Añadir compañero" color="#A60321" />
       <Text style={styles.dividers}>Mis compañeros:</Text>
+      
       <FlatList
         data={companions}
         keyExtractor={(item) => item.id}
@@ -135,6 +138,7 @@ const CollaboratorScreen = ({ user }) => {
       />
 
       <Text style={styles.dividers}>Soy compañero de:</Text>
+   
       <FlatList
         data={companionOf}
         keyExtractor={(item) => item.id}
