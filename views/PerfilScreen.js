@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import React, { useState, useEffect } from 'react';
 // import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 // import { DataStore } from '@aws-amplify/datastore';
@@ -71,6 +72,8 @@
 
 // export default PerfilScreen;
 
+=======
+>>>>>>> kelvin
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, Image, ImageBackground, TouchableOpacity, Button, TextInput, Platform } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
