@@ -66,6 +66,10 @@ const HomeView = ({ user, signOut }) => {
     navigation.navigate('Perfil');
   };
 
+  const handlePaper = () => {
+    navigation.navigate('Paper');
+  };
+
   return (
     <View style={styles.container}>
 
@@ -76,6 +80,9 @@ const HomeView = ({ user, signOut }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={handlePerfil}>
           <Text style={styles.signoff}>Perfil</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handlePaper}>
+          <Text style={styles.signoff}>Paper</Text>
         </TouchableOpacity>
       </View>
 

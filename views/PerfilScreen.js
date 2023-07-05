@@ -72,14 +72,17 @@
 // export default PerfilScreen;
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image, ImageBackground, TouchableOpacity, Button, TextInput, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Button, TextInput, Platform } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../src/models';
 import Swal from 'sweetalert2';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
+import { Checkbox, ActivityIndicator, MD2Colors } from 'react-native-paper';
+
 const PerfilScreen = ({ user }) => {
+  const [checked, setChecked] = React.useState(false);
   const [perfilUser, setPerfilUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState(null);
@@ -252,6 +255,13 @@ const PerfilScreen = ({ user }) => {
           <Text style={styles.text}>{perfilUser.phoneNumber}</Text>
         </View>
       </View>
+      <Checkbox
+        status={checked ? 'checked' : 'unchecked'}
+        onPress={() => {
+          setChecked(!checked);
+        }}
+      />
+      <ActivityIndicator animating={true} color={MD2Colors.red800} />
     </ImageBackground>
   );
 };
