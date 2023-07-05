@@ -1,89 +1,64 @@
 import * as React from 'react';
-import { Avatar, Button, Card, Checkbox, Text, ActivityIndicator, IconButton, Badge, Appbar, MD3Colors  } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { View, Platform } from 'react-native';
+import { Appbar, Avatar, IconButton, TextInput, Button, MD2Colors, MD2DarkTheme } from 'react-native-paper';
 
-const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
+const MORE_ICON = Platform.OS === 'ios' ? 'dots-horizontal' : 'dots-vertical';
 
 const Paper = () => {
-  const [checked, setChecked] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const navigation = useNavigation();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  const handleCheckboxToggle = () => {
-    setChecked(!checked);
+  // Función para retroceder a la vista anterior
+  const handleGoBack = () => {
+    navigation.goBack();
   };
 
-  const handleButtonPress = () => {
-    setLoading(true);
-    // Simular una operación asincrónica
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+  // Componente personalizado para el botón de retroceso
+  const CustomBackButton = () => (
+    <Appbar.Action icon="arrow-left" onPress={handleGoBack} />
+  );
+
+  const handleFormSubmit = () => {
+    // Aquí puedes realizar acciones con los datos del formulario
+    console.log('Email:', email);
+    console.log('Password:', password);
   };
 
   return (
-
-    <Card>
+    <View style={{ flex: 1, backgroundColor: MD2DarkTheme.colors.background }}>
       <Appbar.Header>
-        <Appbar.BackAction onPress={() => { }} />
+        <CustomBackButton />
+        <Appbar.Content title="Title" subtitle="Subtitle" />
+        <Appbar.Action icon="magnify" onPress={() => {}} />
+        <Appbar.Action icon="dots-vertical" onPress={() => {}} />
       </Appbar.Header>
-      <Card.Title title="Card Title" subtitle="Card Subtitle" left={LeftContent} />
-      <Card.Content>
-        <Text variant="titleLarge">Card title</Text>
-        <Text variant="bodyMedium">Card content</Text>
-      </Card.Content>
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-      <Card.Actions>
-        <Button onPress={handleButtonPress}>Cancel</Button>
-        <Button onPress={handleButtonPress}>Ok</Button>
-      </Card.Actions>
-      <Card.Content>
-        <Checkbox.Item
-          label="Checkbox"
-          status={checked ? 'checked' : 'unchecked'}
-          onPress={handleCheckboxToggle}
-        />
-        <Checkbox.Android
-          status={checked ? 'checked' : 'unchecked'}
-          onPress={handleCheckboxToggle}
-        />
-        <Checkbox.IOS
-          status={checked ? 'checked' : 'unchecked'}
-          onPress={handleCheckboxToggle}
-        />
-        <Checkbox.Item
-          label="Disabled Checkbox"
-          status="checked"
-          disabled
-        />
-        <Button mode="contained" onPress={handleButtonPress}>
-          Press me
-        </Button>
-        <Button icon="camera" mode="contained" onPress={handleButtonPress}>
-          Capture
-        </Button>
-        <Button mode="outlined" onPress={handleButtonPress}>
-          Outline Button
-        </Button>
-        <Button icon="star" mode="outlined" onPress={handleButtonPress}>
-          Star
-        </Button>
-        <Button icon="camera" mode="contained" onPress={() => console.log('Pressed')}>
-          Press me
-        </Button>
-        <IconButton icon="heart" size={30} onPress={handleButtonPress} />
-        <IconButton icon="bookmark" color="red" size={30} onPress={handleButtonPress} />
-        <IconButton icon="share-variant" size={30} onPress={handleButtonPress} />
-        <IconButton
-          icon="camera"
-          iconColor={MD3Colors.error50}
-          size={20}
-          onPress={() => console.log('Pressed')}
-        />
 
-        <Badge>5</Badge>
-        <Badge visible={true} size={24}>10</Badge>
-        <ActivityIndicator animating={loading} />
-      </Card.Content>
-    </Card>
+      {/* Contenido adicional */}
+      <View style={{ flex: 1, padding: 16 }}>
+        <Avatar.Icon icon="account" />
+        <TextInput
+          label="Email"
+          value={email}
+          onChangeText={text => setEmail(text)}
+        />
+        <TextInput
+          label="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={text => setPassword(text)}
+        />
+        <Button
+          mode="contained"
+          icon="send"
+          onPress={handleFormSubmit}
+          contentStyle={{ borderRadius: 50 }}
+        >
+          Enviar
+        </Button>
+      </View>
+    </View>
   );
 };
 

@@ -180,7 +180,8 @@
 // export default CollaboratorScreen;
 
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Button, ActivityIndicator } from 'react-native';
+import { View, FlatList } from 'react-native';
+import { Button, Text, ActivityIndicator, Avatar, Card, MD2DarkTheme  } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Companion } from '../src/models';
@@ -288,90 +289,51 @@ const CollaboratorScreen = ({ user }) => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000000" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Button onPress={handleAddCollaborator} title="Añadir compañero" color="#A60321" />
-      <Text style={styles.dividers}>Mis compañeros:</Text>
+    <View style={{ flex: 1, backgroundColor: MD2DarkTheme.colors.background }}>
+      <Button onPress={handleAddCollaborator}>Añadir compañero</Button>
+      <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 8, marginTop: 16 }}>Mis compañeros:</Text>
       <FlatList
         data={companions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>UserID: {item.companionID}</Text>
-            <Text style={styles.cardText}>Name: {item.companion?.name}</Text>
-            <Text style={styles.cardText}>Email: {item.companion?.email}</Text>
-            <Button
-              title="Eliminar"
-              onPress={() => handleDeleteCompanion(item.id)}
-              color="#F29C6B"
-            />
-          </View>
+          <Card style={{ marginBottom: 8 }}>
+            <Card.Title title={`UserID: ${item.companionID}`} />
+            <Card.Content>
+              <Text>Name: {item.companion?.name}</Text>
+              <Text>Email: {item.companion?.email}</Text>
+            </Card.Content>
+            <Card.Actions>
+              <Button icon="trash-can" onPress={() => handleDeleteCompanion(item.id)}>Eliminar</Button>
+            </Card.Actions>
+          </Card>
         )}
       />
 
-      <Text style={styles.dividers}>Soy compañero de:</Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 8, marginTop: 16 }}>Soy compañero de:</Text>
       <FlatList
         data={companionOf}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>UserID: {item.userID}</Text>
-            <Text style={styles.cardText}>Name: {item.user?.name}</Text>
-            <Text style={styles.cardText}>Email: {item.user?.email}</Text>
-          </View>
+          <Card style={{ marginBottom: 8 }}>
+            <Card.Title title={`UserID: ${item.userID}`} />
+            <Card.Content>
+              <Text>Name: {item.user?.name}</Text>
+              <Text>Email: {item.user?.email}</Text>
+            </Card.Content>
+          </Card>
         )}
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dividers: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    marginBottom: 8,
-    marginTop: 16,
-  },
-  card: {
-    backgroundColor: '#F2F2F2',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#888',
-    borderStyle: 'solid',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cardText: {
-    fontSize: 14,
-  },
-});
 
 export default CollaboratorScreen;
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, TextInput, Button, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList, TextInput, Button, Image } from 'react-native';
+import { Text, Avatar, Drawer, TouchableRipple } from 'react-native-paper';
 import { TabView, SceneMap } from 'react-native-tab-view';
 import ProjectScreen from './ProjectScreen';
 import TaskScreen from './TaskScreen';
@@ -10,6 +11,7 @@ import Calendario from './Calendario';
 
 
 const HomeView = ({ user, signOut }) => {
+  const [active, setActive] = React.useState('');
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
   const [routes] = useState([
@@ -32,8 +34,8 @@ const HomeView = ({ user, signOut }) => {
       <View style={styles.sceneContainer}>
         {routes[1].title === 'Proyectos' && (
           <View>
-              <Proyectos />
-              <Calendario />
+            <Proyectos />
+            <Calendario />
           </View>
         )}
       </View>),
@@ -70,21 +72,14 @@ const HomeView = ({ user, signOut }) => {
     navigation.navigate('Paper');
   };
 
+
   return (
     <View style={styles.container}>
-
-      <View style={styles.containertitulo}>
-        <Text style={styles.title}>¡Bienvenid@ {user.username}, a TaskVerse!</Text>
-        <TouchableOpacity onPress={signOut}>
-          <Text style={styles.signoff}>Cerrar sesión</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlePerfil}>
-          <Text style={styles.signoff}>Perfil</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handlePaper}>
-          <Text style={styles.signoff}>Paper</Text>
-        </TouchableOpacity>
-      </View>
+      <Drawer.CollapsedItem
+        focusedIcon="inbox"
+        unfocusedIcon="inbox-outline"
+        label="Inbox"
+      />
 
       <TabView
         navigationState={{ index, routes }}
@@ -93,6 +88,8 @@ const HomeView = ({ user, signOut }) => {
         onIndexChange={setIndex}
         initialLayout={{ width: 300 }}
       />
+
+
     </View>
   );
 };

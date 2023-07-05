@@ -47,6 +47,9 @@ export default function App() {
       surfaceVariant: '#37474F', // Variante de color de la superficie
       disabledSurface: '#616161', // Superficie deshabilitada
       disabledText: '#BDBDBD', // Texto deshabilitado
+      placeholderText: '#757575', // Color del texto de marcador de posición en los TextInputs
+      selectionColor: '#64B5F6', // Color de la selección de texto
+      underlineColor: '#64B5F6', // Color de la línea inferior en los TextInputs
     },
   };
 
@@ -138,7 +141,7 @@ export default function App() {
           <Stack.Screen name="Perfil">
             {(props) => <PerfilScreen {...props} user={user} />}
           </Stack.Screen>
-          <Stack.Screen name="Paper">
+          <Stack.Screen name="Paper" options={{ headerShown: false }}>
             {(props) => <Paper {...props} user={user} />}
           </Stack.Screen>
           <Stack.Screen name="AddCollaborator">
