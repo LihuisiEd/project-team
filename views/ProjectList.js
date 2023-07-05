@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import { Card } from 'react-native-elements';
 import Formulario from './CreateProject';
 import Calendario from './Calendario';
 import { User, Companion, Project } from '../src/models';
@@ -8,6 +9,7 @@ import { DataStore } from '@aws-amplify/datastore';
 const ProjectList = ({ user }) => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState([]);
+  const [proyectoSeleccionado, setProyectoSeleccionado] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -48,21 +50,26 @@ const ProjectList = ({ user }) => {
     setShowFormulario(false);
   };
 
+
   return (
     <View style={styles.container}>
       <View style={styles.projectList}>
-        {projects.map((project) => (
-          <View style={styles.projectContainer} key={project.id}>
-            <Text>{project.projectName}</Text>
-            <Text>{project.description}</Text>
-            {/* Render other project properties as needed */}
-          </View>
+        {projects.map((proyecto) => (
+          <Card key={proyecto.id} containerStyle={{ marginBottom: 10 }}>
+            <Card.Title style={{ fontSize: 16, fontWeight: 'bold' }}>{proyecto.projectName}</Card.Title>
+            <Button
+              title={proyectoSeleccionado === proyecto.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
+              onPress={() => setProyectoSeleccionado(proyecto.id)}
+              buttonStyle={{ backgroundColor: '#8E8E8E' }}
+            />
+            {proyectoSeleccionado === proyecto.id && (
+              <Text style={{ marginTop: 10 }}>{proyecto.description}</Text>
+            )}
+          </Card>
         ))}
-
         <TouchableOpacity onPress={handleButtonPress} style={styles.addButton}>
           <Text style={styles.addButtonLabel}>Agregar Crear Proyecto</Text>
         </TouchableOpacity>
-
         <Calendario />
       </View>
 
@@ -76,6 +83,8 @@ const ProjectList = ({ user }) => {
       )}
     </View>
   );
+
+
 };
 
 const styles = StyleSheet.create({
