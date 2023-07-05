@@ -1,35 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native';
 import Formulario from './CreateProject';
 import Calendario from './Calendario';
-const ProjectList = () => {
-  const projects = [
+import { User, Companion, Project } from '../src/models';
+import { DataStore } from '@aws-amplify/datastore';
 
-    {
-        title: 'Proyecto 1',
-        description: 'Descripción del proyecto 1',
-        participants: ['Participante 1', 'Participante 2'],
-      },
-      {
-        title: 'Proyecto 1',
-        description: 'Descripción del proyecto 1',
-        participants: ['Participante 1', 'Participante 2'],
-      },
-      {
-        title: 'Proyecto 1',
-        description: 'Descripción del proyecto 1',
-        participants: ['Participante 1', 'Participante 2'],
-      },
-      {
-        title: 'Proyecto 1',
-        description: 'Descripción del proyecto 1',
-        participants: ['Participante 1', 'Participante 2'],
-      },
-      
+const ProjectList = ({ user }) => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState([]);
 
-    
-  
-  ];
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const currentUser = await DataStore.query(User, (u) => u.name.eq(user.username.toLowerCase()));
+
+        const fetchedProjects = await DataStore.query(Project, (p) =>
+          p.creatorID.eq(currentUser[0].id)
+        );
+
+        setProjects(fetchedProjects);
+        setLoading(false);
+      } catch (error) {
+        console.log('Error fetching projects:', error);
+      }
+    };
+
+    fetchProjects();
+
+    const subscriptions = [
+      DataStore.observe(Project).subscribe(() => {
+        fetchProjects();
+      }),
+    ];
+
+    return () => {
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
+    };
+  }, [user]);
 
   const [showFormulario, setShowFormulario] = useState(false);
 
@@ -41,15 +48,14 @@ const ProjectList = () => {
     setShowFormulario(false);
   };
 
-  
   return (
     <View style={styles.container}>
       <View style={styles.projectList}>
-        {projects.map((project, index) => (
-          <View style={styles.projectContainer} key={index}>
-            <Text>Titulo: {project.title}</Text>
-            <Text>Descripción: {project.description}</Text>
-            <Text>Participantes: {project.participants.join(', ')}</Text>
+        {projects.map((project) => (
+          <View style={styles.projectContainer} key={project.id}>
+            <Text>{project.projectName}</Text>
+            <Text>{project.description}</Text>
+            {/* Render other project properties as needed */}
           </View>
         ))}
 
@@ -57,23 +63,20 @@ const ProjectList = () => {
           <Text style={styles.addButtonLabel}>Agregar Crear Proyecto</Text>
         </TouchableOpacity>
 
-        <Calendario/>
+        <Calendario />
       </View>
 
       {showFormulario && (
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Formulario />
+            <Formulario user={user} />
             <Button title="Cerrar" onPress={handleCloseFormulario} />
           </View>
         </View>
-
-   
       )}
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -121,10 +124,10 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 8,
     elevation: 5,
-    marginTop: 400, // Ajusta el valor según el espacio deseado entre el borde y el contenido
-    marginBottom:300,
-    borderColor: 'black', // Agrega el color del borde deseado
-    borderWidth: 1, // Ajusta el ancho del borde según tus necesidades
+    marginTop: 400, // Adjust the value according to the desired spacing between the border and the content
+    marginBottom: 300,
+    borderColor: 'black', // Add the desired border color
+    borderWidth: 1, // Adjust the border width as needed
   },
   addButton: {
     backgroundColor: 'blue',
@@ -137,7 +140,6 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
-  //
 });
 
 export default ProjectList;

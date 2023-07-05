@@ -32,8 +32,7 @@ const HomeView = ({ user, signOut }) => {
       <View style={styles.sceneContainer}>
         {routes[1].title === 'Proyectos' && (
               <View >
-                <ProjectList/>
-               
+                <ProjectList user={user}/>
               </View>
         )}
       </View>
