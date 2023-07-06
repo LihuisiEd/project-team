@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Appbar, Menu, Divider } from 'react-native-paper';
 
-const MyHeader = () => {
+const MyHeader = ({ signOut }) => {
     const navigation = useNavigation();
     const [menuVisible, setMenuVisible] = React.useState(false);
 
@@ -19,14 +19,9 @@ const MyHeader = () => {
         setMenuVisible(false);
     };
 
-
-    const handleCerrarSesion = () => {
-        // Lógica para cerrar sesión
-    };
-
     return (
-        <Appbar.Header>
-            <Appbar.Content title="Mi Aplicación" />
+        <Appbar.Header mode='medium' elevated>
+            <Appbar.Content title="TasVerse" />
             <Menu
                 visible={menuVisible}
                 onDismiss={handleMenuClose}
@@ -36,7 +31,7 @@ const MyHeader = () => {
             >
                 <Menu.Item onPress={handlePerfil} title="Perfil" />
                 <Divider />
-                <Menu.Item onPress={handleCerrarSesion} title="Cerrar Sesión" />
+                <Menu.Item onPress={ signOut } title="Cerrar Sesión" />
             </Menu>
         </Appbar.Header>
     );

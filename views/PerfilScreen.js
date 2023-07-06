@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image, ImageBackground, TouchableOpacity, Button, TextInput, Platform } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Platform } from 'react-native';
+import { Appbar, Avatar, IconButton, TextInput, ActivityIndicator } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../src/models';
 import Swal from 'sweetalert2';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
+
 const PerfilScreen = ({ user }) => {
+  const navigation = useNavigation();
   const [perfilUser, setPerfilUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
+
+  const CustomBackButton = () => (
+    <Appbar.Action icon="arrow-left" />
+  );
 
   useEffect(() => {
     const loadPerfilUser = async () => {
@@ -146,14 +158,29 @@ const PerfilScreen = ({ user }) => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000000" />
+      <>
+        <Appbar.Header mode='medium' elevated>
+          <Appbar.BackAction onPress={handleGoBack} />
+          <Appbar.Content title="Perfil" />
+          <Appbar.Action icon="dots-vertical" />
+        </Appbar.Header>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
       </View>
+      </>
     );
   }
 
+
   return (
     <ImageBackground source={require('../assets/background.jpg')} style={styles.backgroundImage}>
+      <View>
+        <Appbar.Header mode='medium' elevated>
+          <Appbar.BackAction onPress={handleGoBack} />
+          <Appbar.Content title="Perfil" />
+          <Appbar.Action icon="dots-vertical" />
+        </Appbar.Header>
+      </View>
       <View style={styles.container}>
         <View style={styles.card}>
           <TouchableOpacity

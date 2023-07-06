@@ -106,7 +106,7 @@ export default function App() {
 
             </>
           )}
-          <Stack.Screen name="Perfil">
+          <Stack.Screen name="Perfil" options={{ headerShown: false }}>
             {(props) => <PerfilScreen {...props} user={user} />}
           </Stack.Screen>
           <Stack.Screen name="AddCollaborator">

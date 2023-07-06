@@ -127,7 +127,7 @@ const CollaboratorScreen = ({ user }) => {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
-      <Button onPress={() => navigation.navigate('AddCollaborator')}>Añadir compañero</Button>
+      <Button mode='contained-tonal' onPress={() => navigation.navigate('AddCollaborator')}>Añadir compañero</Button>
       <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 8, marginTop: 16 }}>Mis compañeros:</Text>
       <FlatList
         data={companions}
@@ -141,7 +141,7 @@ const CollaboratorScreen = ({ user }) => {
               right={(props) => (
                 <IconButton
                   {...props}
-                  icon="pencil"
+                  icon="close-circle"
                   onPress={() => openDialog(item)}
                 />
               )}
@@ -163,7 +163,7 @@ const CollaboratorScreen = ({ user }) => {
               right={(props) => (
                 <IconButton
                   {...props}
-                  icon="pencil"
+                  icon="close-circle"
                   onPress={() => openDialog(item)}
                 />
               )}
@@ -174,13 +174,12 @@ const CollaboratorScreen = ({ user }) => {
 
       <Portal>
         <Dialog visible={dialogVisible} onDismiss={closeDialog}>
-          <Dialog.Title>Opciones</Dialog.Title>
+          <Dialog.Title>¡Hasta pronto!</Dialog.Title>
           <Dialog.Content>
-            <Text>Selecciona una opción:</Text>
+            <Text>¿Estás seguro que quieres eliminar este compañero?</Text>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={handleDelete}>Eliminar</Button>
-            <Button>Editar</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
