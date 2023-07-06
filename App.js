@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DataStore } from 'aws-amplify';
+import 'react-native-gesture-handler'
 
 
 import HomeView from './views/HomeView';
@@ -12,16 +13,15 @@ import VerificationScreen from './views/VerificationScreen'
 import PerfilScreen from './views/PerfilScreen';
 import AddColaborator from './views/AddCollaborator';
 
+import { Provider as PaperProvider } from 'react-native-paper';
 
 // Amplify
 import { Amplify, Auth } from 'aws-amplify';
 import awsconfig from './src/aws-exports';
 Amplify.configure(awsconfig);
 
-
 export default function App() {
   const [user, setUser] = useState(null);
-
   const Stack = createStackNavigator();
 
   useEffect(() => {
@@ -81,38 +81,41 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {user ? (
-          <Stack.Screen name="Home" options={{ headerShown: false }}>
-            {(props) => <HomeView {...props} user={user} signOut={signOut} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login" options={{ headerShown: false }}>
-              {(props) => <LoginScreen {...props} signIn={signIn} />}
+    <PaperProvider >
+      <NavigationContainer>
+        <Stack.Navigator>
+          {user ? (
+            <Stack.Screen name="Home" options={{ headerShown: false }}>
+              {(props) => <HomeView {...props} user={user} signOut={signOut} />}
             </Stack.Screen>
-            <Stack.Screen name="Register" options={{ headerShown: false }}>
-              {(props) => (
-                <RegisterScreen {...props} signUp={signUp} setUser={setUser} />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Verification" options={{ headerShown: false }}>
-              {(props) => (
-                <VerificationScreen {...props} signUp={signUp} setUser={setUser} />
-              )}
-            </Stack.Screen>
+          ) : (
+            <>
+              <Stack.Screen name="Login" options={{ headerShown: false }}>
+                {(props) => <LoginScreen {...props} signIn={signIn} />}
+              </Stack.Screen>
+              <Stack.Screen name="Register" options={{ headerShown: false }}>
+                {(props) => (
+                  <RegisterScreen {...props} signUp={signUp} setUser={setUser} />
+                )}
+              </Stack.Screen>
+              <Stack.Screen name="Verification" options={{ headerShown: false }}>
+                {(props) => (
+                  <VerificationScreen {...props} signUp={signUp} setUser={setUser} />
+                )}
+              </Stack.Screen>
 
-          </>
-        )}
-        <Stack.Screen name="Perfil">
-          {(props) => <PerfilScreen {...props} user={user} />}
-        </Stack.Screen>
-        <Stack.Screen name="AddCollaborator">
-          {(props) => <AddColaborator {...props} user={user} />}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+            </>
+          )}
+          <Stack.Screen name="Perfil">
+            {(props) => <PerfilScreen {...props} user={user} />}
+          </Stack.Screen>
+          <Stack.Screen name="AddCollaborator">
+            {(props) => <AddColaborator {...props} user={user} />}
+          </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+
   );
 }
 

@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Button, ActivityIndicator } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Companion } from '../src/models';
-
-
+import { Button, Avatar, Card, IconButton, Text, ActivityIndicator, Dialog, Portal } from 'react-native-paper';
 const CollaboratorScreen = ({ user }) => {
   const navigation = useNavigation();
   const [companions, setCompanions] = useState([]);
   const [companionOf, setCompanionOf] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCompanion, setSelectedCompanion] = React.useState(null);
+  const [dialogVisible, setDialogVisible] = React.useState(false);
 
-  const handleAddCollaborator = () => {
-    navigation.navigate('AddCollaborator');
+  const openDialog = (companion) => {
+    setSelectedCompanion(companion);
+    setDialogVisible(true);
   };
-
+  const closeDialog = () => {
+    setDialogVisible(false);
+  };
   const getUserById = async (userId) => {
-    
     try {
       const fetchedUser = await DataStore.query(User, userId);
       return fetchedUser;
@@ -24,17 +27,24 @@ const CollaboratorScreen = ({ user }) => {
       console.log('Error fetching user by ID:', error);
     }
   };
-
-  const handleDeleteCompanion = async (companionId) => {
+  const handleDelete = async () => {
     try {
-      const companionToDelete = await DataStore.query(Companion, companionId);
-      await DataStore.delete(companionToDelete);
+      await handleDeleteCompanion(selectedCompanion.id);
       console.log('Companion deleted successfully.');
     } catch (error) {
       console.log('Error deleting companion:', error);
     }
+    closeDialog();
   };
-
+  const handleDeleteCompanion = async (companionId) => {
+    try {
+      const companionToDelete = await DataStore.query(Companion, companionId);
+      await DataStore.delete(companionToDelete);
+    } catch (error) {
+      console.log('Error deleting companion:', error);
+      throw error;
+    }
+  };
   useEffect(() => {
     const fetchCompanions = async () => {
       if (!user || !user.username) {
@@ -109,92 +119,74 @@ const CollaboratorScreen = ({ user }) => {
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000000" />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <Button onPress={handleAddCollaborator} title="Añadir compañero" color="#A60321" />
-      <Text style={styles.dividers}>Mis compañeros:</Text>
-      
+    <View style={{ flex: 1, padding: 16 }}>
+      <Button onPress={() => navigation.navigate('AddCollaborator')}>Añadir compañero</Button>
+      <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 8, marginTop: 16 }}>Mis compañeros:</Text>
       <FlatList
         data={companions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>UserID: {item.companionID}</Text>
-            <Text style={styles.cardText}>Name: {item.companion?.name}</Text>
-            <Text style={styles.cardText}>Email: {item.companion?.email}</Text>
-            <Button
-              title="Eliminar"
-              onPress={() => handleDeleteCompanion(item.id)}
-              color="#F29C6B"
+          <Card style={{ marginBottom: 8 }}>
+            <Card.Title
+              title={item.companion?.name}
+              subtitle={item.companion?.email}
+              left={(props) => <Avatar.Icon {...props} icon="folder" />}
+              right={(props) => (
+                <IconButton
+                  {...props}
+                  icon="pencil"
+                  onPress={() => openDialog(item)}
+                />
+              )}
             />
-          </View>
+          </Card>
         )}
       />
 
-      <Text style={styles.dividers}>Soy compañero de:</Text>
-   
+      <Text style={{ fontWeight: 'bold', fontSize: 18, marginBottom: 8, marginTop: 16 }}>Soy compañero de:</Text>
       <FlatList
         data={companionOf}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>UserID: {item.userID}</Text>
-            <Text style={styles.cardText}>Name: {item.user?.name}</Text>
-            <Text style={styles.cardText}>Email: {item.user?.email}</Text>
-          </View>
+          <Card style={{ marginBottom: 8 }}>
+            <Card.Title
+              title={item.user?.name}
+              subtitle={item.user?.email}
+              left={(props) => <Avatar.Icon {...props} icon="folder" />}
+              right={(props) => (
+                <IconButton
+                  {...props}
+                  icon="pencil"
+                  onPress={() => openDialog(item)}
+                />
+              )}
+            />
+          </Card>
         )}
       />
+
+      <Portal>
+        <Dialog visible={dialogVisible} onDismiss={closeDialog}>
+          <Dialog.Title>Opciones</Dialog.Title>
+          <Dialog.Content>
+            <Text>Selecciona una opción:</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleDelete}>Eliminar</Button>
+            <Button>Editar</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dividers: {
-    fontWeight: 'bold',
-    fontSize: 18,
-    marginBottom: 8,
-    marginTop: 16,
-  },
-  card: {
-    backgroundColor: '#F2F2F2',
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: '#888',
-    borderStyle: 'solid',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cardText: {
-    fontSize: 14,
-  },
-});
 
 export default CollaboratorScreen;
 
