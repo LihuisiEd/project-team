@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DataStore } from '@aws-amplify/datastore';
-import { User, Companion,Project } from '../src/models';
+import { User, Companion,Project, Collaborator } from '../src/models';
 import PruebasPost from './PruebasPost';
 
 const ProjectList = ({ user }) => {
@@ -27,11 +27,8 @@ const ProjectList = ({ user }) => {
 
   useEffect(() => {
     const fetchCompanions = async () => {
-      
       try {
         const currentUser = await DataStore.query(User, (u) => u.name.eq(user.username.toLowerCase()));
-        
-
         const fetchedCompanions = await DataStore.query(Companion, (c) =>
           c.userID.eq(currentUser[0].id)
         );
@@ -66,6 +63,7 @@ const ProjectList = ({ user }) => {
   const handleItemSelect = (itemId) => {
     setSelectedItems((prevSelectedItems) => {
       if (prevSelectedItems.includes(itemId)) {
+        
         return prevSelectedItems.filter((id) => id !== itemId);
       } else {
         return [...prevSelectedItems, itemId];
@@ -91,35 +89,33 @@ const ProjectList = ({ user }) => {
         console.log("Error al buscar el usuario:", error);
         return;
       }
-  
+      console.log(selectedItems)
       const newProject = await DataStore.save(
         new Project({
           projectName: titulo,
           description: descripcion,
           creatorID: userId,
           createdAt: new Date().toISOString()
-        })
+        }),
       );
-  
+      if (selectedItems.length > 0) {
+
+        for (const selectedItem of selectedItems) {
+          await DataStore.save(
+            new Collaborator({
+              userID: selectedItem,
+              projectID: newProject.id, 
+            })
+          );
+        }
+        console.log('Compañeros agregados: ', selectedItems);
+      }
       console.log('Proyecto agregado:', newProject);
     } catch (error) {
       console.log('Error al agregar el proyecto:', error);
     }
   };
   
-
-
-  const handleEnviarClick = () => {
-    setDatosEnviados({
-      titulo,
-      descripcion,
-      companions: selectedItems.map((itemId) => {
-        const companion = companions.find((item) => item.id === itemId);
-        return companion?.companion?.name;
-      }),
-    });
-  };
-
   const renderItem = ({ item }) => {
     const isSelected = selectedItems.includes(item.id);
 
@@ -155,16 +151,10 @@ const ProjectList = ({ user }) => {
       />
 
       <Text style={styles.label}>Colaboradores:</Text>
-      <FlatList
-        data={companions}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
+      <FlatList data={companions} keyExtractor={(item) => item.id} renderItem={renderItem}
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => {
-       
-          handleAddProject();
-      }}>
+      <TouchableOpacity style={styles.button} onPress={() => {handleAddProject();}}>
         <Text style={styles.buttonText}>Enviar</Text>
       </TouchableOpacity>
       {datosEnviados && <PruebasPost data={datosEnviados} />}
