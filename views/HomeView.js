@@ -41,7 +41,7 @@ const HomeView = ({ user, signOut }) => {
       <View style={styles.sceneContainer}>
         {routes[2].title === 'Tareas' && (
           <View>
-            <TaskScreen />
+            <TaskScreen user={user}/>
           </View>
         )}
       </View>

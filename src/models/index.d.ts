@@ -140,7 +140,7 @@ type LazyCompanion = {
   readonly id: string;
   readonly userID: string;
   readonly user: AsyncItem<User | undefined>;
-  readonly companionID: string;
+  readonly projectID: string;
   readonly companion: AsyncItem<User | undefined>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
