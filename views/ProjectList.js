@@ -50,6 +50,16 @@ const ProjectList = ({ user }) => {
     setShowFormulario(false);
   };
 
+  const deleteProject = async (projectId) => {
+    try {
+      const projectToDelete = await DataStore.query(Project, projectId);
+      await DataStore.delete(projectToDelete);
+      console.log('Project deleted successfully.');
+    } catch (error) {
+      console.log('Error deleting project:', error);
+    }
+  }
+
 
   return (
     <View style={styles.container}>
@@ -65,12 +75,16 @@ const ProjectList = ({ user }) => {
             {proyectoSeleccionado === proyecto.id && (
               <Text style={{ marginTop: 10 }}>{proyecto.description}</Text>
             )}
+            <Button
+              title="Eliminar"
+              onPress={() => deleteProject(proyecto.id)}
+              buttonStyle={{ backgroundColor: 'red' }}
+            />
           </Card>
         ))}
         <TouchableOpacity onPress={handleButtonPress} style={styles.addButton}>
           <Text style={styles.addButtonLabel}>Agregar Crear Proyecto</Text>
         </TouchableOpacity>
-        <Calendario />
       </View>
 
       {showFormulario && (
