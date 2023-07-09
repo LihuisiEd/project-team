@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet, Alert, Pressable } from 'react-native';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Companion } from '../src/models';
-import Swal from 'sweetalert2'
 
 const AddColaborator = ({ user }) => {
   const [users, setUsers] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [selectedUserName, setSelectedUserName] = useState('');
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -30,7 +31,6 @@ const AddColaborator = ({ user }) => {
         return;
       }
       if (currentUser[0].id === selectedUser) {
-        Swal.fire({icon: 'error',title: 'Oops...', text: '¡No puedes incluirte a ti mismo como compañero!'}, 'success');
         console.log('No puedes incluirte a ti mismo como compañero');
         return;
       }
@@ -42,10 +42,21 @@ const AddColaborator = ({ user }) => {
         })
       );
 
-      console.log('Compañero agregado:', newCompanion);
+      const selectedUserObj = users.find((user) => user.id === selectedUser);
+      const selectedUserName = selectedUserObj ? selectedUserObj.name : '';
+
+      console.log('Compañero agregado:', newCompanion, 'nombre: ', selectedUserName);
+
+      setSelectedUserName(selectedUserName);
+      setShowAlert(true);
+
     } catch (error) {
       console.log('Error al agregar el compañero:', error);
     }
+  };
+
+  const closeAlert = () => {
+    setShowAlert(false);
   };
 
   return (
@@ -60,12 +71,22 @@ const AddColaborator = ({ user }) => {
             <Button
               title="Añadir"
               onPress={() => handleAddUser(item.id)}
-              color="#A60321"
+              color="#5FB6D9"
               style={styles.addButton}
+              disabled={showAlert}
             />
           </View>
         )}
       />
+      {showAlert && (
+        <View style={styles.alertContainer}>
+          <Text style={styles.alertText}>Añadiste a {selectedUserName} correctamente</Text>
+          <Pressable onPress={closeAlert} style={styles.alertButton}>
+            <Text style={styles.alertButtonText}>Cerrar</Text>
+          </Pressable>
+        </View>
+      )}
+      
     </View>
   );
 };
@@ -77,7 +98,7 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     marginBottom: 16,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: '#45648C',
     padding: 16,
     borderRadius: 8,
     borderWidth: 1,
@@ -104,6 +125,30 @@ const styles = StyleSheet.create({
   addButton: {
     marginTop: 8,
     borderRadius: 8,
+  },
+  alertContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 20,
+    borderRadius: 5,
+    position: 'fixed',
+    top: 80,
+    left: 20,
+    right: 20,
+  },
+  alertText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  alertButton: {
+    backgroundColor: '#A60321',
+    padding: 10,
+    borderRadius: 5,
+  },
+  alertButtonText: {
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
