@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
+import { TextInput, Button, Appbar } from 'react-native-paper';
 import { Auth } from 'aws-amplify';
 
-const imageBackground = require('../assets/background.jpg');
-const logoImage = require('../assets/TaskVerse.png');
+const imageBackground = require('../views/Images/background-task.jpg');
+const logoImage = require('../views/Images/TaskVers-Logo.png');
 
-export default function VerificationScreen() {
+export default function VerificationScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [verificationCode, setVerificationCode] = useState('');
 
@@ -21,23 +22,33 @@ export default function VerificationScreen() {
 
   return (
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      </Appbar.Header>
       <View style={styles.container}>
-        <Image source={logoImage} style={styles.logo} />
+        <Text style={styles.companyName}>TaskVerse</Text>
+        <Image source={logoImage} style={styles.logo} resizeMode="contain"/>
         <TextInput
-          style={styles.input}
-          placeholder="Usuario"
+          label="Usuario"
           value={username}
           onChangeText={setUsername}
+          style={styles.input}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Código de verificación"
+          label="Código de verificación"
           value={verificationCode}
           onChangeText={setVerificationCode}
+          style={styles.input}
         />
-        <Pressable onPress={confirmSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Confirmar cuenta</Text>
-        </Pressable>
+        <Button
+          mode="contained"
+          onPress={confirmSignUp}
+          style={styles.button}
+          labelStyle={styles.buttonText}
+          contentStyle={styles.buttonContent}
+        >
+          Confirmar cuenta
+        </Button>
       </View>
     </ImageBackground>
   );
@@ -47,35 +58,36 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'transparent',
+  },
+  companyName: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#A60321',
+    fontFamily: 'ITC Avant Garde Gothic',
   },
   logo: {
-    width: 400,
-    height: 100,
+    height: 80,
+    aspectRatio: 4 / 1,
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
+    width: 300,
     marginBottom: 10,
-    width: 380,
   },
   button: {
-    backgroundColor: '#A60321',
-    padding: 10,
-    borderRadius: 5,
-    width: 380,
+    marginTop: 20,
+    width: 300,
   },
   buttonText: {
     color: '#F29C6B',
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
   },
 });

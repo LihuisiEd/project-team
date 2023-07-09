@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground, Image, Alert } from 'react-native';
-import { Amplify, Auth } from 'aws-amplify';
-import { DataStore } from 'aws-amplify';
+import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 
-const imageBackground = require('../assets/background.jpg');
-const logoImage = require('../assets/TaskVerse.png');
+const imageBackground = require('../views/Images/background-task.jpg');
+const logoImage = require('../views/Images/TaskVers-Logo.png');
 
 export default function LoginScreen({ signIn, navigation }) {
   const [username, setUsername] = useState('');
@@ -12,9 +11,8 @@ export default function LoginScreen({ signIn, navigation }) {
   const [showAlert, setShowAlert] = useState(false);
 
   const handleSignIn = async () => {
-    if ( (await signIn(username, password)) == true){
+    if (await signIn(username, password)) {
       await signIn(username, password);
-      
     } else {
       setShowAlert(true);
     }
@@ -27,46 +25,57 @@ export default function LoginScreen({ signIn, navigation }) {
   const handleRegister = () => {
     navigation.navigate('Register');
   };
+
   const closeAlert = () => {
     setShowAlert(false);
   };
+
   return (
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
       <View style={styles.container}>
-        <Image source={logoImage} style={styles.logo} />
+        <Text style={styles.companyName}>TaskVerse</Text>
+        <Image source={logoImage} style={styles.logo} resizeMode="contain" />
         <TextInput
-          style={styles.input}
-          placeholder="Usuario"
+          label="Usuario"
           value={username}
           onChangeText={setUsername}
+          style={styles.input}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
+          label="Contraseña"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
+          style={styles.input}
         />
 
-        <Pressable onPress={handleSignIn} style={styles.button}>
-          <Text style={styles.buttonText}>Iniciar sesión</Text>
-        </Pressable>
-        <Pressable onPress={handleRegister}>
-          <Text style={styles.registerText}>¿No tienes una cuenta? Regístrate</Text>
-        </Pressable>
-        <Pressable onPress={handleVerification}>
-          <Text style={styles.registerText}>¿Tienes un código de verificación?</Text>
-        </Pressable>
-        
+        <Button
+          mode="contained"
+          onPress={handleSignIn}
+          style={styles.button}
+          labelStyle={styles.buttonText}
+        >
+          Iniciar sesión
+        </Button>
+
+        <Button onPress={handleRegister} color="#A60321">
+          ¿No tienes una cuenta? Regístrate
+        </Button>
+
+        <Button onPress={handleVerification} color="#A60321">
+          ¿Tienes un código de verificación?
+        </Button>
+
         {showAlert && (
           <View style={styles.alertContainer}>
-            <Text style={styles.alertText}>Contraseña incorrecta. Por favor, verifica tu contraseña.</Text>
-            <Pressable onPress={closeAlert} style={styles.alertButton}>
-              <Text style={styles.alertButtonText}>Cerrar</Text>
-            </Pressable>
+            <Text style={styles.alertText}>
+              Contraseña incorrecta. Por favor, verifica tu contraseña.
+            </Text>
+            <Button onPress={closeAlert} style={styles.alertButton}>
+              Cerrar
+            </Button>
           </View>
         )}
-    
       </View>
     </ImageBackground>
   );
@@ -76,41 +85,37 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'transparent',
+  },
+  companyName: {
+    fontSize: 50,
+    fontFamily: 'ITC Avant Garde Gothic',
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#A60321',
   },
   logo: {
-    width: 400,
-    height: 100,
+    height: 80,
+    aspectRatio: 4 / 1,
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
+    width: 300,
     marginBottom: 10,
-    width: 380,
   },
   button: {
-    backgroundColor: '#A60321',
-    padding: 10,
-    borderRadius: 5,
-    width: 380,
+    marginTop: 20,
+    width: 300,
   },
   buttonText: {
     color: '#F29C6B',
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  registerText: {
-    marginTop: 10,
-    color: '#A60321',
-    textDecorationLine: 'underline',
   },
   alertContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -131,12 +136,4 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-  alertButtonText: {
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
 });
-
-
-

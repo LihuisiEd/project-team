@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { DataStore, Predicates } from '@aws-amplify/datastore';
 import { User, Companion, Project, Task } from '../src/models';
-import { Button, Card } from 'react-native-elements';
+import { Button, Card, List } from 'react-native-paper';
 import Formulario from './CreateTask';
 
 const TaskScreen = ({ user }) => {
   const [tasks, setTasks] = useState([]);
   const [taskSeleccionada, setTaskSeleccionada] = useState(null);
   const [loading, setLoading] = useState(false);
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     fetchTasks();
@@ -59,6 +60,7 @@ const TaskScreen = ({ user }) => {
 
   const handleButtonPress = () => {
     setShowFormulario(true);
+    scrollViewRef.current.scrollToEnd({ animated: true });
   };
 
   const handleCloseFormulario = () => {
@@ -75,26 +77,31 @@ const TaskScreen = ({ user }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} ref={scrollViewRef}>
       <View style={styles.taskList}>
         <Text style={styles.title}>Tareas</Text>
 
         {tasks.map((task) => (
-          <Card key={task.id} containerStyle={{ marginBottom: 10 }}>
-            <Card.Title style={{ fontSize: 16, fontWeight: 'bold' }}>{task.name}</Card.Title>
-            <Text style={styles.subtitle}>Proyecto: {getProjectName(task.projectID)}</Text>
-            <Text style={styles.subtitle}>{task.description}</Text>
-            <Text style={styles.subtitle}>Estado: {task.status}</Text>
-            <Text style={styles.subtitle}>Fecha de inicio: {task.startDate}</Text>
-            <Text style={styles.subtitle}>Fecha de fin: {task.endDate}</Text>
-            
-            <Button
-              title={taskSeleccionada === task.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
-              onPress={() => setTaskSeleccionada(task.id)}
-              buttonStyle={{ backgroundColor: '#8E8E8E' }}
-            />
+          <Card key={task.id} style={styles.card}>
+            <Card.Title title={task.name} />
+            <Card.Content>
+              <Text style={styles.subtitle}>Proyecto: {getProjectName(task.projectID)}</Text>
+              <Text style={styles.subtitle}>{task.description}</Text>
+              <Text style={styles.subtitle}>Estado: {task.status}</Text>
+              <Text style={styles.subtitle}>Fecha de inicio: {task.startDate}</Text>
+              <Text style={styles.subtitle}>Fecha de fin: {task.endDate}</Text>
+            </Card.Content>
+            <Card.Actions>
+              <Button
+                onPress={() => setTaskSeleccionada(taskSeleccionada === task.id ? null : task.id)}
+              >
+                {taskSeleccionada === task.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
+              </Button>
+            </Card.Actions>
             {taskSeleccionada === task.id && (
-              <Text style={{ marginTop: 10 }}>{task.description}</Text>
+              <Card.Content>
+                <Text style={{ marginTop: 10 }}>{task.description}</Text>
+              </Card.Content>
             )}
           </Card>
         ))}
@@ -112,7 +119,7 @@ const TaskScreen = ({ user }) => {
           </View>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -135,42 +142,6 @@ const styles = StyleSheet.create({
   taskList: {
     flex: 1,
   },
-  buttonContainer: {
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-    backgroundColor: 'blue',
-    borderRadius: 50,
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  modalContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    elevation: 5,
-    marginTop: 400,
-    marginBottom: 300,
-    borderColor: 'black',
-    borderWidth: 1,
-  },
   addButton: {
     backgroundColor: 'blue',
     borderRadius: 5,
@@ -181,6 +152,19 @@ const styles = StyleSheet.create({
   addButtonLabel: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  modalContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
+  },
+  card: {
+    marginBottom: 20,
+    padding: 10,
+    elevation: 4,
   },
 });
 

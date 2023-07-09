@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, ImageBackground,Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
+import { TextInput, Button } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../src/models';
+import { Appbar } from 'react-native-paper';
 
-const imageBackground = require('../assets/background.jpg');
-const logoImage = require('../assets/TaskVerse.png');
+const imageBackground = require('../views/Images/background-task.jpg');
+const logoImage = require('../views/Images/TaskVers-Logo.png');
 
 export default function RegisterScreen({ signUp, setUser, navigation }) {
   const [username, setUsername] = useState('');
@@ -38,36 +40,45 @@ export default function RegisterScreen({ signUp, setUser, navigation }) {
 
   return (
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      </Appbar.Header>
       <View style={styles.container}>
-      <Image source={logoImage} style={styles.logo}  />
+        <Text style={styles.companyName}>TaskVerse</Text>
+        <Image source={logoImage} style={styles.logo} resizeMode="contain" />
         <TextInput
-          style={styles.input}
-          placeholder="Usuario"
+          label="Usuario"
           value={username}
           onChangeText={setUsername}
+          style={styles.input}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Contraseña"
+          label="Contraseña"
           secureTextEntry={true}
           value={password}
           onChangeText={setPassword}
+          style={styles.input}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Correo electrónico"
+          label="Correo electrónico"
           value={email}
           onChangeText={setEmail}
+          style={styles.input}
         />
         <TextInput
-          style={styles.input}
-          placeholder="Número de teléfono"
+          label="Número de teléfono"
           value={phoneNumber}
           onChangeText={setPhoneNumber}
+          style={styles.input}
         />
-        <Pressable onPress={handleSignUp} style={styles.button}>
-          <Text style={styles.buttonText}>Registrarse</Text>
-        </Pressable>
+        <Button
+          mode="contained"
+          onPress={handleSignUp}
+          style={styles.button}
+          labelStyle={styles.buttonText}
+        >
+          Registrarse
+        </Button>
       </View>
     </ImageBackground>
   );
@@ -77,31 +88,32 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'transparent',
+  },
+  companyName: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#A60321',
+    fontFamily: 'ITC Avant Garde Gothic', // Agrega el estilo de letra
   },
   logo: {
-    width: 400,
-    height: 100,
+    height: 80, // Ajusta la altura deseada
+    aspectRatio: 4 / 1, // Ajusta la relación de aspecto del logo
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 10,
+    width: 300,
     marginBottom: 10,
-    width: 380,
   },
   button: {
-    backgroundColor: '#A60321',
-    padding: 10,
-    borderRadius: 5,
-    width: 380,
+    marginTop: 20,
+    width: 300,
   },
   buttonText: {
     color: '#F29C6B',
