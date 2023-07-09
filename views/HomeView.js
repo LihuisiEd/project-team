@@ -7,6 +7,7 @@ import TaskScreen from './TaskScreen';
 import CollaboratorScreen from './CollaboratorScreen';
 import Proyectos from './Proyectos';
 import Calendario from './Calendario';
+import PerfilScreen from './PerfilScreen';
 
 const HomeView = ({ user, signOut }) => {
   const navigation = useNavigation();
@@ -15,6 +16,7 @@ const HomeView = ({ user, signOut }) => {
     { key: '1', title: 'Compañeros' },
     { key: '2', title: 'Proyectos' },
     { key: '3', title: 'Tareas' },
+    // { key: '4', title: 'Perfil' },
   ]);
 
   const renderScene = SceneMap({
@@ -46,6 +48,15 @@ const HomeView = ({ user, signOut }) => {
         )}
       </View>
     ),
+    // '4': () => (
+    //   <View style={styles.sceneContainer} onPress={handlePerfil}>
+    //     {routes[3].title === 'Perfil' && (
+    //       <View>
+    //       <PerfilScreen />
+    //     </View>
+    //     )}
+    //   </View>
+    // ),
   });
 
   const renderTabBar = (props) => (
@@ -93,10 +104,11 @@ const HomeView = ({ user, signOut }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#4564',
   },
   containertitulo: {
     paddingTop: 4,
-    backgroundColor: '#A60321',
+    backgroundColor: '#45648C',
     alignItems: 'center',
     marginBottom: 5,
   },
@@ -105,19 +117,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 20,
     textAlign: 'center',
-    backgroundColor: '#A60321',
-    color: '#F29C6B',
+    // backgroundColor: '#45648C',
+    color: '#5FB6D9',
   },
   signoff: {
     fontSize: 19,
-    color: '#F29C6B',
+    color: '#5FB6D9',
     marginLeft: 10,
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 15,
-    backgroundColor: '#A60321',
+    backgroundColor: '#45648C',
     marginLeft: 30,
     marginRight: 30,
     marginBottom: 10,
@@ -146,11 +158,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   tabItemActive: {
-    backgroundColor: '#F29C6B',
+    backgroundColor: '#45648C',
   },
   tabItemText: {
     fontWeight: 'bold',
-    color: '#A60321',
+    color: '#5FB6D9',
   },
   sceneContainer: {
     flex: 1,

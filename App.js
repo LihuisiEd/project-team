@@ -47,7 +47,7 @@ export default function App() {
         console.log('Inicio de sesión exitoso para', user);
       }
     } catch (error) {
-      console.log('Error al iniciar sesión', error);
+      console.log('Autentificacion malaaaaa', error);
     }
   }
 

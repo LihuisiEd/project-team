@@ -60,7 +60,7 @@ export default function LoginScreen({ signIn, navigation }) {
         
         {showAlert && (
           <View style={styles.alertContainer}>
-            <Text style={styles.alertText}>Contraseña incorrecta. Por favor, verifica tu contraseña.</Text>
+            <Text style={styles.alertText}>Error al logearse. Por favor, verifica tu contraseña o la verificacion de la cuenta.</Text>
             <Pressable onPress={closeAlert} style={styles.alertButton}>
               <Text style={styles.alertButtonText}>Cerrar</Text>
             </Pressable>
