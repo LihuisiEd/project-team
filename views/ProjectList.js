@@ -48,6 +48,16 @@ const ProjectList = ({ user }) => {
     setShowFormulario(false);
   };
 
+  const deleteProject = async (projectId) => {
+    try {
+      await DataStore.delete(Project, projectId);
+      // Remove the deleted project from the projects state
+      setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectId));
+    } catch (error) {
+      console.log('Error deleting project:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.projectList}>
@@ -56,6 +66,11 @@ const ProjectList = ({ user }) => {
             <Text>{project.projectName}</Text>
             <Text>{project.description}</Text>
             {/* Render other project properties as needed */}
+            <Button
+              title="Eliminar proyecto"
+              onPress={() => deleteProject(project.id)}
+              color="red"
+            />
           </View>
         ))}
 
