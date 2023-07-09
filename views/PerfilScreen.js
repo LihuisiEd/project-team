@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator, Image, ImageBackground, TouchableOpacity, Button, TextInput, Platform } from 'react-native';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../src/models';
 import Swal from 'sweetalert2';
@@ -38,9 +39,12 @@ const PerfilScreen = ({ user }) => {
   const loadProfileImage = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://taskverse-api-env.eba-hzcetw9a.us-east-1.elasticbeanstalk.com/api/images/${perfilUser.id}/profile_photo`, {
-        responseType: 'arraybuffer',
-      });
+      const response = await axios.get(
+        `http://taskverse-api-env.eba-hzcetw9a.us-east-1.elasticbeanstalk.com/api/images/${perfilUser.id}/profile_photo`,
+        {
+          responseType: 'arraybuffer',
+        }
+      );
 
       const imageUrl = URL.createObjectURL(new Blob([response.data], { type: 'image/jpeg' }));
       setProfileImage(imageUrl);
@@ -57,9 +61,7 @@ const PerfilScreen = ({ user }) => {
     }
   }, [perfilUser]);
 
-
   const handleEditPhoto = async () => {
-
     try {
       const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permissionResult.granted) {
@@ -84,7 +86,6 @@ const PerfilScreen = ({ user }) => {
     }
   };
 
-
   const handleSavePhoto = async () => {
     try {
       if (profileImage !== null) {
@@ -93,20 +94,24 @@ const PerfilScreen = ({ user }) => {
         formData.append('userId', perfilUser.id);
         formData.append('image', blobImage, 'profile_photo.jpg');
 
-        const response = await axios.post('http://taskverse-api-env.eba-hzcetw9a.us-east-1.elasticbeanstalk.com/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
+        const response = await axios.post(
+          'http://taskverse-api-env.eba-hzcetw9a.us-east-1.elasticbeanstalk.com/api/upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
 
         if (response.status === 200) {
           Swal.fire('Imagen guardada correctamente', '', 'success');
           setIsEditMode(false);
 
           // Actualizar el estado para reflejar que se ha guardado la imagen
-          setPerfilUser(prevUser => ({
+          setPerfilUser((prevUser) => ({
             ...prevUser,
-            profileImage: true
+            profileImage: true,
           }));
           setProfileImage(null); // Limpiar la imagen seleccionada
         } else {
@@ -123,7 +128,7 @@ const PerfilScreen = ({ user }) => {
 
   const convertBase64ToBlob = (base64, type) => {
     return new Promise((resolve, reject) => {
-      const base64String = base64.split(',')[1]; // Eliminar el prefijo "data:image/jpeg;base64,"
+      const base64String = base64.split(',')[1];
 
       const byteCharacters = atob(base64String);
       const byteArrays = [];
@@ -143,7 +148,6 @@ const PerfilScreen = ({ user }) => {
     });
   };
 
-
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -153,42 +157,37 @@ const PerfilScreen = ({ user }) => {
   }
 
   return (
-    <ImageBackground source={require('../assets/background.jpg')} style={styles.backgroundImage}>
-      <View style={styles.container}>
-        <View style={styles.card}>
-          <TouchableOpacity
-            style={styles.profileImageContainer}
-            onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
-          >
-            <View style={styles.profileContainer}>
-              {loading ? (
-                <ActivityIndicator size="large" color="#0000ff" />
-              ) : profileImage ? (
-                <Image source={{ uri: profileImage }} style={styles.profileImage} />
-              ) : (
-                <Image source={require('../assets/perfil.jpg')} style={styles.profileImage} />
-              )}
-              <Text style={styles.editPhotoText}>{isEditMode ? 'Guardar Foto' : 'Editar Foto'}</Text>
-            </View>
-          </TouchableOpacity>
-
+    <View style={styles.container}>
+      <View style={styles.profileContainer}>
+        <Avatar.Image
+          size={200}
+          source={
+            profileImage ? { uri: profileImage } : require('../assets/perfil.jpg')
+          }
+        />
+        <Button
+          mode="contained"
+          style={styles.editButton}
+          onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
+        >
+          {isEditMode ? 'Guardar Foto' : 'Editar Foto'}
+        </Button>
+      </View>
+      <Card style={styles.card}>
+        <Card.Content>
           <Text style={styles.label}>Nombre de usuario:</Text>
           <Text style={styles.text}>{perfilUser.name}</Text>
           <Text style={styles.label}>Email de usuario:</Text>
           <Text style={styles.text}>{perfilUser.email}</Text>
           <Text style={styles.label}>Teléfono de usuario:</Text>
           <Text style={styles.text}>{perfilUser.phoneNumber}</Text>
-        </View>
-      </View>
-    </ImageBackground>
+        </Card.Content>
+      </Card>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    resizeMode: 'cover',
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -200,44 +199,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-    padding: 16,
-    elevation: 3,
-  },
   profileContainer: {
     alignItems: 'center',
     marginBottom: 16,
   },
-  profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 8,
+  editButton: {
+    marginTop: 8,
   },
-  username: {
-    fontSize: 18,
-    fontWeight: 'bold',
+  card: {
+    width: '80%',
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 6,
   },
   text: {
     fontSize: 14,
-  },
-  input: {
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#000000',
-    borderRadius: 5,
-    marginTop: 5,
-    padding: 5,
+    marginBottom: 10,
   },
 });
 
 export default PerfilScreen;
-
-

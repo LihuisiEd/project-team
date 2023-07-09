@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { DataStore, Predicates } from '@aws-amplify/datastore';
 import { User, Companion, Project, Task } from '../src/models';
 import { Button, Card } from 'react-native-elements';
@@ -9,6 +9,7 @@ const TaskScreen = ({ user }) => {
   const [tasks, setTasks] = useState([]);
   const [taskSeleccionada, setTaskSeleccionada] = useState(null);
   const [loading, setLoading] = useState(false);
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     fetchTasks();
@@ -59,6 +60,7 @@ const TaskScreen = ({ user }) => {
 
   const handleButtonPress = () => {
     setShowFormulario(true);
+    scrollViewRef.current.scrollToEnd({ animated: true });
   };
 
   const handleCloseFormulario = () => {
@@ -75,7 +77,7 @@ const TaskScreen = ({ user }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} ref={scrollViewRef}>
       <View style={styles.taskList}>
         <Text style={styles.title}>Tareas</Text>
 
@@ -112,7 +114,7 @@ const TaskScreen = ({ user }) => {
           </View>
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -152,22 +154,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   modalContent: {
     backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    elevation: 5,
-    marginTop: 400,
-    marginBottom: 300,
     borderColor: 'black',
     borderWidth: 1,
   },

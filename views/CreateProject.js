@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DataStore } from '@aws-amplify/datastore';
-import { User, Companion,Project, Collaborator } from '../src/models';
+import { User, Companion, Project, Collaborator } from '../src/models';
+import { TextInput, Button, Checkbox } from 'react-native-paper';
 import PruebasPost from './PruebasPost';
 
 const ProjectList = ({ user }) => {
@@ -63,7 +64,6 @@ const ProjectList = ({ user }) => {
   const handleItemSelect = (itemId) => {
     setSelectedItems((prevSelectedItems) => {
       if (prevSelectedItems.includes(itemId)) {
-        
         return prevSelectedItems.filter((id) => id !== itemId);
       } else {
         return [...prevSelectedItems, itemId];
@@ -74,32 +74,30 @@ const ProjectList = ({ user }) => {
   const handleAddProject = async () => {
     try {
       let userId; // Declarar la variable userId fuera del bloque try
-  
+
       try {
         const users = await DataStore.query(User, (u) => u.name.eq(user.username.toLowerCase()));
-      
         if (users.length === 0) {
           console.log("No se encontraron usuarios con ese nombre");
           return;
         }
-      
         userId = users[0].id; // Asignar el valor de userId dentro del bloque try
         console.log("ID del usuario encontrado:", userId);
       } catch (error) {
         console.log("Error al buscar el usuario:", error);
         return;
       }
-      console.log(selectedItems)
+
       const newProject = await DataStore.save(
         new Project({
           projectName: titulo,
           description: descripcion,
           creatorID: userId,
           createdAt: new Date().toISOString()
-        }),
+        })
       );
-      if (selectedItems.length > 0) {
 
+      if (selectedItems.length > 0) {
         for (const selectedItem of selectedItems) {
           await DataStore.save(
             new Collaborator({
@@ -108,23 +106,24 @@ const ProjectList = ({ user }) => {
             })
           );
         }
-        console.log('Compañeros agregados: ', selectedItems);
+        console.log('Compañeros agregados:', selectedItems);
       }
       console.log('Proyecto agregado:', newProject);
     } catch (error) {
       console.log('Error al agregar el proyecto:', error);
     }
   };
-  
+
   const renderItem = ({ item }) => {
     const isSelected = selectedItems.includes(item.id);
 
     return (
       <View style={styles.itemContainer}>
         <Text style={styles.itemTitle}>{item.companion?.name}</Text>
-        <TouchableOpacity
-          style={[styles.checkbox, isSelected && styles.selectedCheckbox]}
+        <Checkbox
+          status={isSelected ? 'checked' : 'unchecked'}
           onPress={() => handleItemSelect(item.id)}
+          color="#d03335" // Cambio de color del checkbox
         />
       </View>
     );
@@ -133,30 +132,40 @@ const ProjectList = ({ user }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Título:</Text>
-
       <TextInput
-        style={styles.input}
+        style={[styles.input, { backgroundColor: '#f9ead3' }]}
         value={titulo}
         onChangeText={setTitulo}
         placeholder="Ingresa el título"
+        theme={{ colors: { primary: '#d03335', text: 'black', background: '#f9ead3' } }}
       />
 
       <Text style={styles.label}>Descripción:</Text>
       <TextInput
-        style={styles.textarea}
+        style={[styles.textarea, { backgroundColor: '#f9ead3' }]}
         value={descripcion}
         onChangeText={setDescripcion}
         placeholder="Ingresa la descripción"
         multiline={true}
+        theme={{ colors: { primary: '#d03335', text: 'black', background: '#f9ead3' } }}
       />
 
       <Text style={styles.label}>Colaboradores:</Text>
-      <FlatList data={companions} keyExtractor={(item) => item.id} renderItem={renderItem}
+      <FlatList
+        data={companions}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
       />
 
-      <TouchableOpacity style={styles.button} onPress={() => {handleAddProject();}}>
-        <Text style={styles.buttonText}>Enviar</Text>
-      </TouchableOpacity>
+      <Button
+        mode="contained"
+        onPress={handleAddProject}
+        style={[styles.button, { backgroundColor: '#d03335' }]}
+        labelStyle={[styles.buttonText, { color: 'white' }]}
+        theme={{ colors: { primary: '#d03335', text: 'white' } }}
+      >
+        Enviar
+      </Button>
       {datosEnviados && <PruebasPost data={datosEnviados} />}
     </View>
   );
@@ -174,23 +183,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    paddingHorizontal: 8,
     marginBottom: 16,
   },
   textarea: {
-    width: '100%',
-    height: 100,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    paddingHorizontal: 8,
     marginBottom: 16,
-    textAlignVertical: 'top',
+    height: 100,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -201,22 +198,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
   },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    marginRight: 8,
-  },
-  selectedCheckbox: {
-    backgroundColor: 'blue',
-    borderColor: 'blue',
-  },
   button: {
-    backgroundColor: 'blue',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 4,
     marginTop: 50,
     marginBottom: 30,
   },
@@ -224,7 +206,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
+   textAlign: 'center',
   },
 });
 

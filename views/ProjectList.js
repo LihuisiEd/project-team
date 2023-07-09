@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, Text, ScrollView } from 'react-native';
 import { Button, Dialog, Portal, Drawer, IconButton } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
@@ -14,6 +14,7 @@ const ProjectList = ({ user }) => {
   const [showFormulario, setShowFormulario] = useState(false);
   const [showCalendario, setShowCalendario] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const scrollViewRef = useRef(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -43,6 +44,7 @@ const ProjectList = ({ user }) => {
 
   const handleButtonPress = () => {
     setShowFormulario(true);
+    scrollViewRef.current.scrollToEnd({ animated: true });
   };
 
   const handleCloseFormulario = () => {
@@ -60,7 +62,7 @@ const ProjectList = ({ user }) => {
   
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} ref={scrollViewRef}>
       <View style={styles.projectList}>
         {projects.map((proyecto) => (
           <ProjectCard
@@ -120,7 +122,9 @@ const ProjectList = ({ user }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Formulario user={user} />
-            <Button onPress={handleCloseFormulario}>Cerrar</Button>
+            <Button onPress={handleCloseFormulario}
+            labelStyle={[styles.buttonText, { color: '#d03335' }]}
+            >Cerrar</Button>
           </View>
         </View>
       )}
@@ -139,22 +143,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   modalContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingBottom: 10,
   },
   modalContent: {
     backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
-    elevation: 5,
-    marginTop: 400,
-    marginBottom: 300,
     borderColor: 'black',
     borderWidth: 1,
   },
