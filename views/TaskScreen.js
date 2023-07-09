@@ -2,14 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { DataStore, Predicates } from '@aws-amplify/datastore';
 import { User, Companion, Project, Task } from '../src/models';
-import { Button, Card, List } from 'react-native-paper';
+import { Button, Card, List, Drawer } from 'react-native-paper';
 import Formulario from './CreateTask';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const TaskScreen = ({ user }) => {
   const [tasks, setTasks] = useState([]);
   const [taskSeleccionada, setTaskSeleccionada] = useState(null);
   const [loading, setLoading] = useState(false);
   const scrollViewRef = useRef(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     fetchTasks();
@@ -79,18 +81,21 @@ const TaskScreen = ({ user }) => {
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
       <View style={styles.taskList}>
-        <Text style={styles.title}>Tareas</Text>
-
         {tasks.map((task) => (
           <Card key={task.id} style={styles.card}>
-            <Card.Title title={task.name} />
-            <Card.Content>
-              <Text style={styles.subtitle}>Proyecto: {getProjectName(task.projectID)}</Text>
-              <Text style={styles.subtitle}>{task.description}</Text>
-              <Text style={styles.subtitle}>Estado: {task.status}</Text>
-              <Text style={styles.subtitle}>Fecha de inicio: {task.startDate}</Text>
-              <Text style={styles.subtitle}>Fecha de fin: {task.endDate}</Text>
-            </Card.Content>
+            <Card.Title
+              title={task.name}
+              left={() => <List.Icon icon="assignment" name="tasks" />}
+            />
+            {taskSeleccionada === task.id && (
+              <Card.Content>
+                <Text style={styles.subtitle}>Proyecto: {getProjectName(task.projectID)}</Text>
+                <Text style={styles.subtitle}>Estado: {task.status}</Text>
+                <Text style={styles.subtitle}>Fecha de inicio: {task.startDate}</Text>
+                <Text style={styles.subtitle}>Fecha de fin: {task.endDate}</Text>
+                <Text style={styles.subtitle}>Descripción: {task.description}</Text>
+              </Card.Content>
+            )}
             <Card.Actions>
               <Button
                 onPress={() => setTaskSeleccionada(taskSeleccionada === task.id ? null : task.id)}
@@ -98,15 +103,11 @@ const TaskScreen = ({ user }) => {
                 {taskSeleccionada === task.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
               </Button>
             </Card.Actions>
-            {taskSeleccionada === task.id && (
-              <Card.Content>
-                <Text style={{ marginTop: 10 }}>{task.description}</Text>
-              </Card.Content>
-            )}
           </Card>
         ))}
 
         <TouchableOpacity onPress={handleButtonPress} style={styles.addButton}>
+          <Icon name="add" size={20} color="#212022" />
           <Text style={styles.addButtonLabel}>Agregar Tarea</Text>
         </TouchableOpacity>
       </View>
@@ -115,7 +116,7 @@ const TaskScreen = ({ user }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Formulario user={user} onCreateTask={handleCreateTask} />
-            <Button title="Cerrar" onPress={handleCloseFormulario} />
+            <Button onPress={handleCloseFormulario} color="#d03335">Cerrar</Button>
           </View>
         </View>
       )}
@@ -143,15 +144,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   addButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#f9ead3',
     borderRadius: 5,
     padding: 10,
     alignItems: 'center',
     marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   addButtonLabel: {
-    color: 'white',
+    color: '#212022',
     fontWeight: 'bold',
+    marginLeft: 5,
   },
   modalContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -160,11 +164,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderColor: 'black',
     borderWidth: 1,
+    position: 'relative',
   },
   card: {
     marginBottom: 20,
     padding: 10,
     elevation: 4,
+  },
+  drawerSection: {
+    backgroundColor: '#212022',
+  },
+  drawerItemLabel: {
+    color: '#f9ead3',
+    fontWeight: 'bold',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 });
 
