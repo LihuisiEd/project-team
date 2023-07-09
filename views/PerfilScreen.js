@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, ActivityIndicator, ImageBackground } from 'react-native';
 import { Avatar, Button, Card, Text } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../src/models';
 import Swal from 'sweetalert2';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+
+const imageBackground = require('../views/Images/background-task.jpg');
 
 const PerfilScreen = ({ user }) => {
   const [perfilUser, setPerfilUser] = useState(null);
@@ -157,37 +159,43 @@ const PerfilScreen = ({ user }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.profileContainer}>
-        <Avatar.Image
-          size={200}
-          source={
-            profileImage ? { uri: profileImage } : require('../assets/perfil.jpg')
-          }
-        />
-        <Button
-          mode="contained"
-          style={styles.editButton}
-          onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
-        >
-          {isEditMode ? 'Guardar Foto' : 'Editar Foto'}
-        </Button>
+    <ImageBackground source={imageBackground} style={styles.backgroundImage}>
+      <View style={styles.container}>
+        <View style={styles.profileContainer}>
+          <Avatar.Image
+            size={200}
+            source={
+              profileImage ? { uri: profileImage } : require('../assets/perfil.jpg')
+            }
+          />
+          <Button
+            mode="contained"
+            style={styles.editButton}
+            onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
+          >
+            {isEditMode ? 'Guardar Foto' : 'Editar Foto'}
+          </Button>
+        </View>
+        <Card style={styles.card}>
+          <Card.Content>
+            <Text style={styles.label}>Nombre de usuario:</Text>
+            <Text style={styles.text}>{perfilUser.name}</Text>
+            <Text style={styles.label}>Email de usuario:</Text>
+            <Text style={styles.text}>{perfilUser.email}</Text>
+            <Text style={styles.label}>Teléfono de usuario:</Text>
+            <Text style={styles.text}>{perfilUser.phoneNumber}</Text>
+          </Card.Content>
+        </Card>
       </View>
-      <Card style={styles.card}>
-        <Card.Content>
-          <Text style={styles.label}>Nombre de usuario:</Text>
-          <Text style={styles.text}>{perfilUser.name}</Text>
-          <Text style={styles.label}>Email de usuario:</Text>
-          <Text style={styles.text}>{perfilUser.email}</Text>
-          <Text style={styles.label}>Teléfono de usuario:</Text>
-          <Text style={styles.text}>{perfilUser.phoneNumber}</Text>
-        </Card.Content>
-      </Card>
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',

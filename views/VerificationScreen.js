@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { TextInput, Button, Appbar } from 'react-native-paper';
 import { Auth } from 'aws-amplify';
 
-const imageBackground = require('../assets/background.jpg');
+const imageBackground = require('../views/Images/background-task.jpg');
 const logoImage = require('../views/Images/TaskVers-Logo.png');
 
 export default function VerificationScreen({ navigation }) {
@@ -58,13 +58,12 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'transparent',
   },
   companyName: {
     fontSize: 50,

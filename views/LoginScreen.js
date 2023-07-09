@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 
-const imageBackground = require('../assets/background.jpg');
+const imageBackground = require('../views/Images/background-task.jpg');
 const logoImage = require('../views/Images/TaskVers-Logo.png');
 
 export default function LoginScreen({ signIn, navigation }) {
@@ -85,24 +85,23 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'transparent',
   },
   companyName: {
     fontSize: 50,
-    fontFamily: 'ITC Avant Garde Gothic', // Añade el nombre de la fuente correcto
+    fontFamily: 'ITC Avant Garde Gothic',
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#A60321',
   },
   logo: {
-    height: 80, // Ajusta la altura deseada
-    aspectRatio: 4 / 1, // Ajusta la relación de aspecto del logo
+    height: 80,
+    aspectRatio: 4 / 1,
     marginBottom: 20,
   },
   input: {
