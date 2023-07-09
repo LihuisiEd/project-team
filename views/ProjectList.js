@@ -57,6 +57,8 @@ const ProjectList = ({ user }) => {
     setDrawerOpen(!drawerOpen);
   };
 
+  
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.projectList}>
