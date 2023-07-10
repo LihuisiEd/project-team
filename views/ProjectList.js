@@ -14,6 +14,8 @@ const ProjectList = ({ user }) => {
   const [showFormulario, setShowFormulario] = useState(false);
   const [showCalendario, setShowCalendario] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
   const scrollViewRef = useRef(null);
 
   useEffect(() => {
@@ -59,6 +61,19 @@ const ProjectList = ({ user }) => {
     setDrawerOpen(!drawerOpen);
   };
 
+  const handleDeleteConfirmation = (projectId) => {
+    setProjectToDelete(projectId);
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleDeleteProject = async () => {
+    try {
+      await DataStore.delete(Project, projectToDelete);
+      setShowDeleteConfirmation(false);
+    } catch (error) {
+      console.log('Error deleting project:', error);
+    }
+  };
   
 
   return (
@@ -70,6 +85,7 @@ const ProjectList = ({ user }) => {
             proyecto={proyecto}
             proyectoSeleccionado={proyectoSeleccionado}
             setProyectoSeleccionado={setProyectoSeleccionado}
+            onDelete={handleDeleteConfirmation}
           />
         ))}
         <Drawer.Section
@@ -113,6 +129,18 @@ const ProjectList = ({ user }) => {
             </Dialog.Content>
             <Dialog.Actions>
               <Button onPress={handleToggleCalendario}>Cerrar</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+        <Portal>
+          <Dialog visible={showDeleteConfirmation} onDismiss={() => setShowDeleteConfirmation(false)}>
+            <Dialog.Title>Confirmar Eliminación</Dialog.Title>
+            <Dialog.Content>
+              <Text>¿Estás seguro de que deseas eliminar este proyecto?</Text>
+            </Dialog.Content>
+            <Dialog.Actions>
+              <Button onPress={handleDeleteProject}>Eliminar</Button>
+              <Button onPress={() => setShowDeleteConfirmation(false)}>Cancelar</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
