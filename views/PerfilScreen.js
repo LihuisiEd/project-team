@@ -171,6 +171,7 @@ const PerfilScreen = ({ user }) => {
           <Button
             mode="contained"
             style={styles.editButton}
+            labelStyle={{color:'white'}}
             onPress={isEditMode ? handleSavePhoto : handleEditPhoto}
           >
             {isEditMode ? 'Guardar Foto' : 'Editar Foto'}
@@ -213,7 +214,8 @@ const styles = StyleSheet.create({
   },
   editButton: {
     marginTop: 8,
-  
+  backgroundColor:'#d03335'
+
   },
   card: {
     width: '80%',
@@ -230,3 +232,10 @@ const styles = StyleSheet.create({
 });
 
 export default PerfilScreen;
+
+
+
+
+
+
+

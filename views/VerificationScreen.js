@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
-import { TextInput, Button, Appbar } from 'react-native-paper';
+import { TextInput, Button, Appbar,Provider as PaperProvider, DefaultTheme  } from 'react-native-paper';
 import { Auth } from 'aws-amplify';
 
 const imageBackground = require('../views/Images/background-task.jpg');
@@ -21,9 +21,10 @@ export default function VerificationScreen({ navigation }) {
   };
 
   return (
+    <PaperProvider theme={theme} >
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      <Appbar.Header style={styles.navbar}>
+        <Appbar.BackAction onPress={() => navigation.goBack()} style={styles.flechita}/>
       </Appbar.Header>
       <View style={styles.container}>
         <Text style={styles.companyName}>TaskVerse</Text>
@@ -51,8 +52,16 @@ export default function VerificationScreen({ navigation }) {
         </Button>
       </View>
     </ImageBackground>
+    </PaperProvider>
   );
 }
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#d03335',
+  },
+};
 
 const styles = StyleSheet.create({
   backgroundImage: {
@@ -86,8 +95,14 @@ const styles = StyleSheet.create({
     width: 300,
   },
   buttonText: {
-    color: '#F29C6B',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  navbar: {
+    backgroundColor: '#212022',
+  },
+  flechita: {
+    backgroundColor: '#d03335',
   },
 });

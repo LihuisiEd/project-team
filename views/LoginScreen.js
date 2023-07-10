@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button,Provider as PaperProvider, DefaultTheme  } from 'react-native-paper';
 
 const imageBackground = require('../views/Images/background-task.jpg');
 const logoImage = require('../views/Images/TaskVers-Logo.png');
@@ -31,6 +31,7 @@ export default function LoginScreen({ signIn, navigation }) {
   };
 
   return (
+    <PaperProvider theme={theme}>
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
       <View style={styles.container}>
         <Text style={styles.companyName}>TaskVerse</Text>
@@ -58,11 +59,11 @@ export default function LoginScreen({ signIn, navigation }) {
           Iniciar sesión
         </Button>
 
-        <Button onPress={handleRegister} color="#A60321">
+        <Button onPress={handleRegister} labelStyle={styles.texto} >
           ¿No tienes una cuenta? Regístrate
         </Button>
 
-        <Button onPress={handleVerification} color="#A60321">
+        <Button onPress={handleVerification} labelStyle={styles.texto}>
           ¿Tienes un código de verificación?
         </Button>
 
@@ -78,9 +79,16 @@ export default function LoginScreen({ signIn, navigation }) {
         )}
       </View>
     </ImageBackground>
+    </PaperProvider>
   );
 }
-
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#d03335',
+  },
+};
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
@@ -107,13 +115,16 @@ const styles = StyleSheet.create({
   input: {
     width: 300,
     marginBottom: 10,
+    backgroundColor: 'white',
   },
   button: {
     marginTop: 20,
     width: 300,
+    backgroundColor: '#d03335',
+    color: 'white',
   },
   buttonText: {
-    color: '#F29C6B',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -132,8 +143,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   alertButton: {
-    backgroundColor: '#A60321',
+    backgroundColor: '#d03335',
     padding: 10,
     borderRadius: 5,
+  },
+  texto: {
+    color: '#d03335',
   },
 });

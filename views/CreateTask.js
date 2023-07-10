@@ -165,6 +165,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
+    color: 'white'
   },
   input: {
     width: '100%',
@@ -174,6 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 8,
     marginBottom: 16,
+    backgroundColor: 'white'
   },
   textarea: {
     width: '100%',
@@ -184,6 +186,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginBottom: 16,
     textAlignVertical: 'top',
+    backgroundColor: 'white'
   },
   picker: {
     width: '100%',
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: 'blue',
+    backgroundColor: '#d03335',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 4,

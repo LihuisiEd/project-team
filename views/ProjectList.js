@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { Button, Dialog, Portal, Drawer, IconButton, Text } from 'react-native-paper';
+import { View, StyleSheet, Text, ScrollView } from 'react-native';
+import { Button, Dialog, Portal, Drawer, IconButton,Provider as PaperProvider, DefaultTheme  } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Project } from '../src/models';
 import ProjectCard from './Projects/ProjectCard';
@@ -76,8 +76,9 @@ const ProjectList = ({ user }) => {
   };
   
   
-
+  
   return (
+    <PaperProvider theme={theme}>
     <ScrollView style={styles.container} ref={scrollViewRef}>
       <View style={styles.projectList}>
         {projects.map((proyecto) => (
@@ -109,7 +110,7 @@ const ProjectList = ({ user }) => {
             )}
             label="Agregar Proyecto"
             onPress={handleButtonPress}
-            labelStyle={styles.drawerItemLabel}
+            labelStyle={{color: '#212022'}}
           />
           <Drawer.Item
             icon={({ color, size }) => (
@@ -117,12 +118,12 @@ const ProjectList = ({ user }) => {
             )}
             label="Mostrar Calendario"
             onPress={handleToggleCalendario}
-            labelStyle={styles.drawerItemLabel}
+            labelStyle={{color: '#212022'}}
           />
         </Drawer.Section>
-        <Portal>
-          <Dialog visible={showCalendario} onDismiss={handleToggleCalendario}>
-            <Dialog.Title>Calendario</Dialog.Title>
+        <Portal >
+          <Dialog visible={showCalendario} onDismiss={handleToggleCalendario} style={{ backgroundColor: '#212022' }}>
+            <Dialog.Title style={{ color: 'white' }}>Calendario</Dialog.Title>
             <Dialog.Content>
               <View style={styles.calendarioContainer}>
                 <Calendario />
@@ -161,9 +162,17 @@ const ProjectList = ({ user }) => {
         </View>
       )}
     </ScrollView>
+    </PaperProvider>
   );
 };
-
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    text: '#d03335', // Cambia el color del texto aquí
+    primary: '#25232A'
+  },
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -173,12 +182,13 @@ const styles = StyleSheet.create({
   },
   projectList: {
     flex: 1,
+    
   },
   modalContainer: {
     paddingBottom: 10,
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: '#25232A',
     borderColor: 'black',
     borderWidth: 1,
   },
@@ -216,6 +226,7 @@ const styles = StyleSheet.create({
   drawerSection: {
     marginTop: 10,
     backgroundColor: '#f9ead3',
+    color: '#212022',
   },
   menuButton: {
     position: 'absolute',
@@ -224,7 +235,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   drawerItemLabel: {
-    color: '#d03335',
+    color: '#212022',
   },
   deleteButton: {
     position: 'absolute',
