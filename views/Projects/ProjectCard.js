@@ -1,9 +1,14 @@
 import React from 'react';
-import { Button, Card, List } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Button, Card, List, IconButton } from 'react-native-paper';
 
-const ProjectCard = ({ proyecto, proyectoSeleccionado, setProyectoSeleccionado }) => {
+const ProjectCard = ({ proyecto, proyectoSeleccionado, setProyectoSeleccionado,onDelete  }) => {
   const handleButtonPress = () => {
     setProyectoSeleccionado(proyectoSeleccionado === proyecto.id ? null : proyecto.id);
+  };
+
+  const handleDelete = () => {
+    onDelete(proyecto.id);
   };
 
   return (
@@ -13,6 +18,7 @@ const ProjectCard = ({ proyecto, proyectoSeleccionado, setProyectoSeleccionado }
     titleStyle={{ color: 'white' }}
     left={(props) => <List.Icon {...props} icon="folder" color="white" />}
   />
+  <IconButton icon="close" onPress={handleDelete} style={styles.deleteButton} />
       <Card.Content>
         {proyectoSeleccionado === proyecto.id && (
           <List.Subheader style={{ color: 'white' }}>{proyecto.description}</List.Subheader>
@@ -33,3 +39,14 @@ const ProjectCard = ({ proyecto, proyectoSeleccionado, setProyectoSeleccionado }
 };
 
 export default ProjectCard;
+
+const styles = StyleSheet.create({
+  // Resto de los estilos...
+
+  deleteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
+});
+
