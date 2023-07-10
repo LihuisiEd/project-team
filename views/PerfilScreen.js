@@ -213,6 +213,7 @@ const styles = StyleSheet.create({
   },
   editButton: {
     marginTop: 8,
+  
   },
   card: {
     width: '80%',
