@@ -17,10 +17,10 @@ const TabNavigator = ({ user }) => {
         name="Compañeros"
         component={() => <CollaboratorScreen user={user} />}
         options={{
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color  }) => (
             <FontAwesome name="users" size={20} color={'#d03335'} />
           ),
-          tabBarLabelStyle: { color: '#f9ead3' },
+          tabBarLabelStyle: { color: '#f9ead3'  },
         }}
       />
       <Tab.Screen

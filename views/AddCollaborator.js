@@ -71,7 +71,7 @@ const AddColaborator = ({ user }) => {
             <Button
               title="Añadir"
               onPress={() => handleAddUser(item.id)}
-              color="#5FB6D9"
+              color="#d03335"
               style={styles.addButton}
               disabled={showAlert}
             />
@@ -95,10 +95,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#212022', 
   },
   userContainer: {
     marginBottom: 16,
-    backgroundColor: '#45648C',
+    backgroundColor: '#25232A',
     padding: 16,
     borderRadius: 8,
     borderWidth: 1,
@@ -117,14 +118,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
+    color: '#d03335',
   },
   userEmail: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 8, 
+    color: '#f9ead3',
   },
   addButton: {
     marginTop: 8,
     borderRadius: 8,
+    backgroundColor: '#d03335'
   },
   alertContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
@@ -139,9 +143,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     marginBottom: 10,
+    color: '#f9ead3',
   },
   alertButton: {
-    backgroundColor: '#A60321',
+    backgroundColor: '#d03335',
     padding: 10,
     borderRadius: 5,
   },
