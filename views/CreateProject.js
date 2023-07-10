@@ -133,21 +133,21 @@ const ProjectList = ({ user }) => {
     <View style={styles.container}>
       <Text style={styles.label}>Título:</Text>
       <TextInput
-        style={[styles.input, { backgroundColor: '#f9ead3' }]}
+        style={[styles.input, { backgroundColor: 'white' }]}
         value={titulo}
         onChangeText={setTitulo}
         placeholder="Ingresa el título"
-        theme={{ colors: { primary: '#d03335', text: 'black', background: '#f9ead3' } }}
+        theme={{ colors: { primary: '#d03335', text: 'white', background: 'white' } }}
       />
 
       <Text style={styles.label}>Descripción:</Text>
       <TextInput
-        style={[styles.textarea, { backgroundColor: '#f9ead3' }]}
+        style={[styles.textarea, { backgroundColor: 'white' }]}
         value={descripcion}
         onChangeText={setDescripcion}
         placeholder="Ingresa la descripción"
         multiline={true}
-        theme={{ colors: { primary: '#d03335', text: 'black', background: '#f9ead3' } }}
+        theme={{ colors: { primary: '#d03335', text: 'white', background: '#f9ead3' } }}
       />
 
       <Text style={styles.label}>Colaboradores:</Text>
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     marginBottom: 8,
+    color: 'white'
   },
   input: {
     marginBottom: 16,
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     flex: 1,
     fontSize: 14,
+    color: 'white'
   },
   button: {
     marginTop: 50,

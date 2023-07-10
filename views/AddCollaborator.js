@@ -60,6 +60,7 @@ const AddColaborator = ({ user }) => {
   };
 
   return (
+    
     <View style={styles.container}>
       <FlatList
         data={users}

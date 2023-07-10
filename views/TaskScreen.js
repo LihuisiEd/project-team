@@ -99,6 +99,8 @@ const TaskScreen = ({ user }) => {
             <Card.Actions>
               <Button
                 onPress={() => setTaskSeleccionada(taskSeleccionada === task.id ? null : task.id)}
+                style={{ backgroundColor: '#d03335', borderColor: '#d03335'}}
+          labelStyle={{color: 'white'}}// Cambia el color del texto del botón
               >
                 {taskSeleccionada === task.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
               </Button>
@@ -116,7 +118,7 @@ const TaskScreen = ({ user }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Formulario user={user} onCreateTask={handleCreateTask} />
-            <Button onPress={handleCloseFormulario} color="#d03335">Cerrar</Button>
+            <Button labelStyle={{ color: 'white' }} onPress={handleCloseFormulario} >Cerrar</Button>
           </View>
         </View>
       )}
@@ -139,6 +141,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     marginBottom: 5,
+    color: 'white'
   },
   taskList: {
     flex: 1,
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: '#25232A',
     borderColor: 'black',
     borderWidth: 1,
     position: 'relative',

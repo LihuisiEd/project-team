@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User } from '../src/models';
-import { Appbar } from 'react-native-paper';
+import { Appbar,Provider as PaperProvider, DefaultTheme  } from 'react-native-paper';
 
 const imageBackground = require('../views/Images/background-task.jpg');
 const logoImage = require('../views/Images/TaskVers-Logo.png');
@@ -39,9 +39,10 @@ export default function RegisterScreen({ signUp, setUser, navigation }) {
   };
 
   return (
+    <PaperProvider theme={theme}>
     <ImageBackground source={imageBackground} style={styles.backgroundImage}>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      <Appbar.Header style={styles.navbar}>
+        <Appbar.BackAction onPress={() => navigation.goBack()} style={styles.flechita}/>
       </Appbar.Header>
       <View style={styles.container}>
         <Text style={styles.companyName}>TaskVerse</Text>
@@ -70,6 +71,7 @@ export default function RegisterScreen({ signUp, setUser, navigation }) {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
           style={styles.input}
+          labelStyle={styles.buttonText}
         />
         <Button
           mode="contained"
@@ -81,13 +83,26 @@ export default function RegisterScreen({ signUp, setUser, navigation }) {
         </Button>
       </View>
     </ImageBackground>
+    </PaperProvider>
   );
 }
-
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: '#d03335',
+  },
+};
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
+  },
+  flechita: {
+    backgroundColor: '#d03335',
+  },
+  navbar: {
+    backgroundColor: '#212022',
   },
   container: {
     flex: 1,
@@ -110,13 +125,16 @@ const styles = StyleSheet.create({
   input: {
     width: 300,
     marginBottom: 10,
+    backgroundColor: 'white',
   },
   button: {
     marginTop: 20,
     width: 300,
+    backgroundColor: '#d03335',
+    
   },
   buttonText: {
-    color: '#F29C6B',
+    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },

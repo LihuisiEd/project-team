@@ -7,21 +7,23 @@ const ProjectCard = ({ proyecto, proyectoSeleccionado, setProyectoSeleccionado }
   };
 
   return (
-    <Card style={{ marginBottom: 10 }}>
-      <Card.Title
-        title={proyecto.projectName}
-        left={(props) => <List.Icon {...props} icon="folder" />}
-      />
+    <Card style={{ marginBottom: 10, backgroundColor: '#25232A' }}>
+  <Card.Title
+    title={proyecto.projectName}
+    titleStyle={{ color: 'white' }}
+    left={(props) => <List.Icon {...props} icon="folder" color="white" />}
+  />
       <Card.Content>
         {proyectoSeleccionado === proyecto.id && (
-          <List.Subheader>{proyecto.description}</List.Subheader>
+          <List.Subheader style={{ color: 'white' }}>{proyecto.description}</List.Subheader>
         )}
       </Card.Content>
       <Card.Actions>
         <Button
           mode="contained"
           onPress={handleButtonPress}
-          style={{ backgroundColor: '#8E8E8E' }}
+          style={{ backgroundColor: '#d03335' }}
+          labelStyle={{color: 'white'}}
         >
           {proyectoSeleccionado === proyecto.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
         </Button>
