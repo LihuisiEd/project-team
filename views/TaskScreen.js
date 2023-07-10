@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { DataStore, Predicates } from '@aws-amplify/datastore';
 import { User, Companion, Project, Task } from '../src/models';
-import { Button, Card, List, Drawer } from 'react-native-paper';
+import { Button, Card, List, Drawer, IconButton, Dialog, Portal, Text } from 'react-native-paper';
 import Formulario from './CreateTask';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -11,6 +11,8 @@ const TaskScreen = ({ user }) => {
   const [taskSeleccionada, setTaskSeleccionada] = useState(null);
   const [loading, setLoading] = useState(false);
   const scrollViewRef = useRef(null);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
@@ -26,12 +28,12 @@ const TaskScreen = ({ user }) => {
       const currentUser = await DataStore.query(User, (u) => u.name.eq(user.username.toLowerCase()));
       const currentUserProjects = await DataStore.query(Project, (p) => p.creatorID.eq(currentUser[0].id));
       const currentUserProjectIDs = currentUserProjects.map((project) => project.id);
-      
+
       const allTasks = await DataStore.query(Task);
       const filteredTasks = allTasks.filter((task) =>
         currentUserProjectIDs.includes(task.projectID)
       );
-  
+
       setTasks(filteredTasks);
     } catch (error) {
       console.log('Error fetching tasks:', error);
@@ -78,6 +80,20 @@ const TaskScreen = ({ user }) => {
     }
   };
 
+  const handleDeleteConfirmation = (taskId) => {
+    setTaskToDelete(taskId);
+    setShowDeleteConfirmation(true);
+  };
+
+  const handleDeleteTask = async () => {
+    try {
+      await DataStore.delete(Task, taskToDelete);
+      setShowDeleteConfirmation(false);
+    } catch (error) {
+      console.log('Error deleting task:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
       <View style={styles.taskList}>
@@ -86,6 +102,13 @@ const TaskScreen = ({ user }) => {
             <Card.Title
               title={task.name}
               left={() => <List.Icon icon="assignment" name="tasks" />}
+              right={() => (
+                <IconButton
+                  icon="close"
+                  color="#d03335"
+                  onPress={() => handleDeleteConfirmation(task.id)}
+                />
+              )}
             />
             {taskSeleccionada === task.id && (
               <Card.Content>
@@ -98,6 +121,7 @@ const TaskScreen = ({ user }) => {
             )}
             <Card.Actions>
               <Button
+                mode="contained"
                 onPress={() => setTaskSeleccionada(taskSeleccionada === task.id ? null : task.id)}
               >
                 {taskSeleccionada === task.id ? 'Ocultar Descripción' : 'Mostrar Descripción'}
@@ -120,6 +144,18 @@ const TaskScreen = ({ user }) => {
           </View>
         </View>
       )}
+      <Portal>
+        <Dialog visible={showDeleteConfirmation} onDismiss={() => setShowDeleteConfirmation(false)}>
+          <Dialog.Title>Confirmar Eliminación</Dialog.Title>
+          <Dialog.Content>
+            <Text>¿Estás seguro de que deseas eliminar esta tarea?</Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={handleDeleteTask}>Eliminar</Button>
+            <Button onPress={() => setShowDeleteConfirmation(false)}>Cancelar</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </ScrollView>
   );
 };
@@ -183,6 +219,7 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
   },
+  
 });
 
 export default TaskScreen;

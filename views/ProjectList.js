@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, Text, ScrollView } from 'react-native';
-import { Button, Dialog, Portal, Drawer, IconButton } from 'react-native-paper';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Button, Dialog, Portal, Drawer, IconButton, Text } from 'react-native-paper';
 import { DataStore } from '@aws-amplify/datastore';
 import { User, Project } from '../src/models';
 import ProjectCard from './Projects/ProjectCard';
