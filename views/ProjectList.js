@@ -75,6 +75,7 @@ const ProjectList = ({ user }) => {
     }
   };
   
+  
 
   return (
     <ScrollView style={styles.container} ref={scrollViewRef}>
@@ -150,9 +151,12 @@ const ProjectList = ({ user }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Formulario user={user} />
-            <Button onPress={handleCloseFormulario}
-            labelStyle={[styles.buttonText, { color: '#d03335' }]}
-            >Cerrar</Button>
+            <Button
+              onPress={handleCloseFormulario}
+              labelStyle={[styles.buttonText, { color: '#d03335' }]}
+            >
+              Cerrar
+            </Button>
           </View>
         </View>
       )}
@@ -221,6 +225,11 @@ const styles = StyleSheet.create({
   },
   drawerItemLabel: {
     color: '#d03335',
+  },
+  deleteButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
   },
 });
 
